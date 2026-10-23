@@ -1,0 +1,37 @@
+{
+  "n": 24,
+  "root_step_acc": 1.0,
+  "pattern_acc": 1.0,
+  "per_pattern": {
+    "FP01": {
+      "n": 3,
+      "root_step_acc": 1.0,
+      "pattern_acc": 1.0
+    },
+    "FP03": {
+      "n": 6,
+      "root_step_acc": 1.0,
+      "pattern_acc": 1.0
+    },
+    "FP04": {
+      "n": 7,
+      "root_step_acc": 1.0,
+      "pattern_acc": 1.0
+    },
+    "FP05": {
+      "n": 5,
+      "root_step_acc": 1.0,
+      "pattern_acc": 1.0
+    },
+    "FP07": {
+      "n": 3,
+      "root_step_acc": 1.0,
+      "pattern_acc": 1.0
+    }
+  },
+  "sources": [
+    "llm+rules",
+    "rules"
+  ],
+  "generated_at": "2026-10-23T17:00"
+}
