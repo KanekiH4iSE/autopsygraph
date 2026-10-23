@@ -13,3 +13,4 @@
 - FP03 alternates Denver/Austin: an Austin request picks C-031, a Denver request picks C-019.
 - FP05 root step = the answer step; FP05 on T15 has no tool calls at all (root = step 1).
 - Run ids are a seeded sample from 1..120 so hero ids (003, 017, 066, 087) sit among them.
+- Aura Free instance Instance01 (Neo4j 5.27, europe-west3) created and loaded on 2026-10-23: 36 runs, 116 steps, 80 tool calls; load is idempotent. Fleet query: check_refund_eligibility timed out in 8 runs, ignored in 7.
