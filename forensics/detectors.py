@@ -34,8 +34,8 @@ def ignored_error(run_id: str) -> list[Hit]:
         RETURN st.idx AS step, tc.tool_name AS tool, err.code AS error, err.retryable AS retryable, o.id AS obs
         ORDER BY step""", run_id=run_id)
     return [Hit("FP04", r["step"], 3, "ignored_error", [],
-                f"{r['tool']} returned {r['error']} (retryable={r['retryable']}); no retry or escalation followed, "
-                f"and the answer does not mention it") for r in rows]
+                f"{r['tool']} returned {r['error']}{' (retryable)' if r['retryable'] else ''}; the agent neither "
+                f"retried nor escalated, and the answer does not mention it") for r in rows]
 
 
 def invalid_args(run_id: str) -> list[Hit]:
