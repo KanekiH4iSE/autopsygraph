@@ -40,8 +40,8 @@ INTENTS = {"order_status_ambiguous": "Order status (ambiguous name)", "refund_el
 CSS = """
 <style>
 #MainMenu, header [data-testid="stToolbar"], footer {visibility: hidden;}
-header[data-testid="stHeader"] {background: rgba(247,248,252,.72); backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(22,24,29,.06);}
+header[data-testid="stHeader"] {background: rgba(255,255,255,.94); border-bottom: 1px solid rgba(22,24,29,.08);
+  box-shadow: 0 1px 8px rgba(16,24,40,.04);}
 .block-container {padding-top: 1.6rem; padding-bottom: 2rem; max-width: 1500px;}
 h1, h2, h3 {letter-spacing: -0.02em;}
 .ag-brand {font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.1rem;}
@@ -148,7 +148,7 @@ html, body, [class*="st-"] {-webkit-font-smoothing: antialiased; -moz-osx-font-s
   background: conic-gradient(from 0deg at 50% 50%, rgba(229,72,77,.06), rgba(142,78,198,.06), rgba(0,144,255,.05),
   rgba(229,72,77,.06)); filter: blur(60px); animation: ag-spin 40s linear infinite;}
 @keyframes ag-spin {to {transform: rotate(360deg);}}
-.block-container {position: relative; z-index: 1; padding-top: 1rem;}
+.block-container {position: relative; z-index: 1; padding-top: 5.2rem !important;}
 .ag-hero {display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.1rem 1.4rem;
   border-radius:20px; margin:.2rem 0 1.4rem 0; color:#fff; position:relative; overflow:hidden;
   background: linear-gradient(120deg,#16181D 0%,#2B1B3D 45%,#4A1622 100%); background-size: 200% 200%;
