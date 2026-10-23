@@ -40,6 +40,8 @@ INTENTS = {"order_status_ambiguous": "Order status (ambiguous name)", "refund_el
 CSS = """
 <style>
 #MainMenu, header [data-testid="stToolbar"], footer {visibility: hidden;}
+header[data-testid="stHeader"] {background: rgba(247,248,252,.72); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(22,24,29,.06);}
 .block-container {padding-top: 1.6rem; padding-bottom: 2rem; max-width: 1500px;}
 h1, h2, h3 {letter-spacing: -0.02em;}
 .ag-brand {font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.1rem;}
@@ -107,15 +109,15 @@ html, body, [class*="st-"] {-webkit-font-smoothing: antialiased; -moz-osx-font-s
   transition-property: transform, box-shadow; transition-duration: 160ms; transition-timing-function: ease-out;}
 .ag-kpi:hover {transform: translateY(-1px); box-shadow: 0 2px 4px rgba(16,24,40,.05), 0 10px 24px rgba(16,24,40,.07);}
 .ag-verdict {box-shadow: 0 1px 2px rgba(229,72,77,.06), 0 12px 32px rgba(229,72,77,.08);
-  animation: ag-enter 280ms cubic-bezier(.2,.8,.2,1) both;}
+  animation: ag-enter 280ms var(--ease-out) both;}
 .ag-fleet {box-shadow: 0 2px 6px rgba(16,24,40,.12), 0 18px 40px rgba(16,24,40,.18);
-  animation: ag-enter 320ms cubic-bezier(.2,.8,.2,1) both;}
+  animation: ag-enter 320ms var(--ease-out) both;}
 @keyframes ag-enter {from {opacity: 0; transform: translateY(8px); filter: blur(2px);}
                      to {opacity: 1; transform: none; filter: none;}}
 /* timeline motion: steps cascade in, arrows draw, the root cause glows, the fix appears last */
-.ag-step {opacity: 0; animation: ag-pop 420ms cubic-bezier(.2,.8,.2,1) forwards;}
+.ag-step {opacity: 0; animation: ag-pop 420ms var(--ease-out) forwards;}
 .ag-draw {stroke-dasharray: 80; stroke-dashoffset: 80; animation: ag-draw-line 360ms ease-out forwards;}
-.ag-ghost {opacity: 0; animation: ag-enter 460ms cubic-bezier(.2,.8,.2,1) forwards;}
+.ag-ghost {opacity: 0; animation: ag-enter 460ms var(--ease-out) forwards;}
 .ag-root {animation: ag-glow 1.6s ease-in-out 600ms 3;}
 @keyframes ag-pop {from {opacity: 0; transform: translateY(10px) scale(.97);} to {opacity: 1; transform: none;}}
 @keyframes ag-draw-line {to {stroke-dashoffset: 0;}}
@@ -123,20 +125,86 @@ html, body, [class*="st-"] {-webkit-font-smoothing: antialiased; -moz-osx-font-s
                     50% {filter: drop-shadow(0 0 10px rgba(229,72,77,.55));}}
 .ag-step, .ag-ghost {transform-box: fill-box; transform-origin: center;}
 /* page-level motion */
-.ag-kpi {animation: ag-enter 380ms cubic-bezier(.2,.8,.2,1) both;}
+.ag-kpi {animation: ag-enter 380ms var(--ease-out) both;}
 .ag-kpi:nth-child(2) {animation-delay: 60ms;} .ag-kpi:nth-child(3) {animation-delay: 120ms;}
 .ag-kpi:nth-child(4) {animation-delay: 180ms;}
 .ag-title {animation: ag-enter 300ms ease-out both;}
 .ag-fleet .big span {display: inline-block; animation: ag-bounce 700ms cubic-bezier(.34,1.56,.64,1) 200ms both;}
 @keyframes ag-bounce {from {opacity: 0; transform: scale(.4);} to {opacity: 1; transform: scale(1);}}
 .ag-fixed {border: 1px solid #BFE6CC; border-left: 6px solid #2EAA5C; background: linear-gradient(180deg,#F2FBF5,#fff);
-  border-radius: 16px; padding: 1rem 1.2rem; margin: .8rem 0; animation: ag-enter 360ms cubic-bezier(.2,.8,.2,1) both;
+  border-radius: 16px; padding: 1rem 1.2rem; margin: .8rem 0; animation: ag-enter 360ms var(--ease-out) both;
   box-shadow: 0 1px 2px rgba(46,170,92,.08), 0 12px 32px rgba(46,170,92,.10);}
 .ag-fixed .t {font-size: 1.2rem; font-weight: 800; color: #1F7A3F;}
 .ag-fixed .s {color: #3D6B4D;}
 .ag-fixed-bad {border-color: #F3C4C6; border-left-color: #E5484D; background: #FFF7F7;}
 .ag-fixed-bad .t {color: #B4232A;}
+/* ===== colour + motion layer (Emil Kowalski tokens) ===== */
+:root {--ease-out: cubic-bezier(0.23, 1, 0.32, 1); --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);}
+.stApp {background:
+  radial-gradient(1200px 600px at -10% -10%, rgba(229,72,77,.10), transparent 60%),
+  radial-gradient(1000px 600px at 110% 0%, rgba(142,78,198,.12), transparent 60%),
+  radial-gradient(900px 700px at 50% 120%, rgba(0,144,255,.08), transparent 60%), #F7F8FC;}
+.stApp::before {content:""; position:fixed; inset:-20%; pointer-events:none; z-index:0;
+  background: conic-gradient(from 0deg at 50% 50%, rgba(229,72,77,.06), rgba(142,78,198,.06), rgba(0,144,255,.05),
+  rgba(229,72,77,.06)); filter: blur(60px); animation: ag-spin 40s linear infinite;}
+@keyframes ag-spin {to {transform: rotate(360deg);}}
+.block-container {position: relative; z-index: 1; padding-top: 1rem;}
+.ag-hero {display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.1rem 1.4rem;
+  border-radius:20px; margin:.2rem 0 1.4rem 0; color:#fff; position:relative; overflow:hidden;
+  background: linear-gradient(120deg,#16181D 0%,#2B1B3D 45%,#4A1622 100%); background-size: 200% 200%;
+  box-shadow: 0 2px 6px rgba(16,24,40,.18), 0 20px 50px rgba(74,22,34,.25);
+  animation: ag-enter 240ms var(--ease-out) both, ag-shift 14s ease-in-out infinite alternate;}
+.ag-hero::after {content:""; position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.10) 50%, transparent 60%);
+  transform: translateX(-100%); animation: ag-sheen 5s var(--ease-in-out) 1s infinite;}
+@keyframes ag-shift {from {background-position: 0% 50%;} to {background-position: 100% 50%;}}
+@keyframes ag-sheen {0% {transform: translateX(-100%);} 35%, 100% {transform: translateX(100%);}}
+.ag-hero .ag-brand {color:#fff; margin:0;} .ag-hero .ag-tag {color:#C9CCD6; margin:0;}
+.ag-hero .ag-brand span {background: linear-gradient(90deg,#FF6369,#C084FC,#60A5FA,#FF6369); background-size:300% 100%;
+  -webkit-background-clip:text; color:transparent; animation: ag-shift 6s linear infinite alternate;}
+.ag-hero-r {display:flex; gap:.6rem; align-items:center; flex-wrap:wrap;}
+.ag-event {font-size:.78rem; color:#E7E9F0; border:1px solid rgba(255,255,255,.18); padding:.2rem .6rem; border-radius:999px;
+  background: rgba(255,255,255,.06);}
+.ag-live i {animation: ag-ping 1.8s var(--ease-out) infinite;}
+@keyframes ag-ping {0% {box-shadow: 0 0 0 0 rgba(46,170,92,.6);} 80%, 100% {box-shadow: 0 0 0 8px rgba(46,170,92,0);}}
+/* coloured accents on cards */
+.ag-kpi {position:relative; overflow:hidden;}
+.ag-kpi::before {content:""; position:absolute; left:0; top:0; right:0; height:4px;
+  background: linear-gradient(90deg,#E5484D,#8E4EC6,#0090FF); transform-origin:left; transform: scaleX(0);
+  animation: ag-bar 600ms var(--ease-out) 200ms forwards;}
+.ag-kpi:nth-child(2)::before {animation-delay: 260ms;} .ag-kpi:nth-child(3)::before {animation-delay: 320ms;}
+.ag-kpi:nth-child(4)::before {animation-delay: 380ms;}
+@keyframes ag-bar {to {transform: scaleX(1);}}
+.ag-card {border-top: 3px solid #E6E9F0;}
+.ag-card:nth-of-type(1) {border-top-color:#0090FF;}
+.ag-chip {transition-property: transform, background-color, border-color; transition-duration: 160ms;
+  transition-timing-function: var(--ease-out);}
+.ag-ev {transition-property: transform, box-shadow; transition-duration: 180ms; transition-timing-function: var(--ease-out);}
+.ag-ev, .ag-chip {animation: ag-enter 260ms var(--ease-out) both;}
+.ag-ev:nth-child(2) {animation-delay: 40ms;} .ag-ev:nth-child(3) {animation-delay: 80ms;}
+.ag-chip:nth-child(2) {animation-delay: 40ms;} .ag-chip:nth-child(3) {animation-delay: 80ms;}
+.ag-chip:nth-child(4) {animation-delay: 120ms;}
+.ag-sec {animation: ag-enter 260ms var(--ease-out) both;}
+.ag-sec:nth-of-type(2) {animation-delay: 60ms;} .ag-sec:nth-of-type(3) {animation-delay: 120ms;}
+.ag-sec:nth-of-type(4) {animation-delay: 180ms;} .ag-sec:nth-of-type(5) {animation-delay: 240ms;}
+.ag-conf i {transform-origin: left; animation: ag-bar 700ms var(--ease-out) 150ms both;}
+.ag-badge {animation: ag-pop 240ms var(--ease-out) both;}
+.ag-stale {animation: ag-flash 1.4s ease-in-out 400ms 2;}
+@keyframes ag-flash {50% {box-shadow: 0 0 0 4px rgba(229,72,77,.25);}}
+.ag-callout {animation: ag-enter 280ms var(--ease-out) 260ms both;}
+.ag-step rect, .ag-ghost rect {transition-property: transform; transition-duration: 180ms;
+  transition-timing-function: var(--ease-out); transform-box: fill-box; transform-origin: center;}
+@media (hover: hover) and (pointer: fine) {
+  .ag-card:hover {transform: translateY(-2px); box-shadow: 0 2px 4px rgba(16,24,40,.05), 0 14px 30px rgba(16,24,40,.08);}
+  .ag-chip:hover {transform: translateY(-1px); background:#EEF1F7; border-color:#D3D7E1;}
+  .ag-ev:hover {transform: translateX(3px); box-shadow: 0 6px 16px rgba(0,96,199,.10);}
+  .ag-step:hover rect {transform: scale(1.03);}
+  .ag-verdict:hover {box-shadow: 0 2px 4px rgba(229,72,77,.08), 0 18px 40px rgba(229,72,77,.12);}
+}
 @media (prefers-reduced-motion: reduce) {
+  .stApp::before, .ag-hero, .ag-hero::after, .ag-hero .ag-brand span, .ag-live i, .ag-kpi::before, .ag-ev, .ag-chip,
+  .ag-sec, .ag-conf i, .ag-badge, .ag-stale, .ag-callout {animation: none !important;}
+  .ag-kpi::before, .ag-conf i {transform: none;}
   .ag-verdict, .ag-fleet, .ag-kpi, .ag-title, .ag-fixed, .ag-fleet .big span, .ag-root {animation: none;}
   .ag-step, .ag-ghost {animation: none; opacity: 1;} .ag-draw {animation: none; stroke-dashoffset: 0;}
   .ag-kpi:hover {transform: none;}}
@@ -650,14 +718,12 @@ def page_fleet() -> None:
 RUNS_PAGE = st.Page(page_runs, title="Runs", icon="📋", url_path="runs", default=True)
 DETAIL_PAGE = st.Page(page_detail, title="Run detail", icon="🔍", url_path="run")
 FLEET_PAGE = st.Page(page_fleet, title="Fleet", icon="🌐", url_path="fleet")
-with st.sidebar:
-    st.markdown('<div class="ag-brand">🩻 <span>AutopsyGraph</span></div>'
-                '<div class="ag-tag">Every failed agent run leaves evidence. We follow it.</div>',
-                unsafe_allow_html=True)
-nav = st.navigation([RUNS_PAGE, DETAIL_PAGE, FLEET_PAGE], position="sidebar")
-with st.sidebar:
-    st.markdown('<div class="ag-live"><i></i>Live on Neo4j Aura</div>' if aura_ok() else
-                '<span class="ag-pill ag-bad">● Aura unreachable</span>', unsafe_allow_html=True)
-    st.caption("Graphs Gone Wild · NODES 2026")
+nav = st.navigation([RUNS_PAGE, DETAIL_PAGE, FLEET_PAGE], position="top")
+live = ('<span class="ag-live"><i></i>Live on Neo4j Aura</span>' if aura_ok() else
+        '<span class="ag-pill ag-bad">● Aura unreachable</span>')
+st.markdown(f'<div class="ag-hero"><div class="ag-hero-in"><div class="ag-brand">🩻 <span>AutopsyGraph</span></div>'
+            f'<div class="ag-tag">Every failed agent run leaves evidence. We follow it.</div></div>'
+            f'<div class="ag-hero-r">{live}<span class="ag-event">Graphs Gone Wild · NODES 2026</span></div></div>',
+            unsafe_allow_html=True)
 nav.run()
 st.markdown(f'<div class="ag-foot">{esc(FOOTER)}</div>', unsafe_allow_html=True)
