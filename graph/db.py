@@ -14,7 +14,8 @@ load_dotenv()
 def get_driver() -> Driver:
     """Return a cached driver built from .env."""
     return GraphDatabase.driver(os.environ["NEO4J_URI"],
-                                auth=(os.environ.get("NEO4J_USER", "neo4j"), os.environ["NEO4J_PASSWORD"]))
+                                auth=(os.environ.get("NEO4J_USER", "neo4j"), os.environ["NEO4J_PASSWORD"]),
+                                notifications_min_severity="OFF")
 
 
 def database() -> str:
