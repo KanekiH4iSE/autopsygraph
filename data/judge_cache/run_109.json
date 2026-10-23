@@ -1,0 +1,17 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP01",
+  "contributing": [
+    "FP11@3"
+  ],
+  "confidence": 0.9,
+  "evidence_ids": [
+    "run_109-e1",
+    "run_109-e2"
+  ],
+  "explanation": "The agent incorrectly used 'search_policy' instead of the required 'check_refund_eligibility' tool to determine if the order was refundable. This led to an incorrect assertion that the order was eligible for a refund, despite the final-sale item exclusion. The failure occurred at step 2, where the wrong tool was selected.",
+  "counterfactual": "Call the authoritative tool (search_policy) and answer from its result instead of inferring from policy text.",
+  "recommendation": "Make the authoritative tool mandatory before eligibility answers.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

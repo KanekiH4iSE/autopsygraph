@@ -1,0 +1,15 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP03",
+  "contributing": [],
+  "confidence": 1.0,
+  "evidence_ids": [
+    "run_068-e2",
+    "run_068-e3"
+  ],
+  "explanation": "The agent incorrectly listed orders for customer C-019 instead of C-031, which led to a mismatch in the latest order. This mistake occurred at step 2 when the agent was supposed to retrieve orders for the correct customer. As a result, the order information provided was inaccurate.",
+  "counterfactual": "Ask which customer the user means (the request names a city) and continue with the matching record.",
+  "recommendation": "Require a clarifying question when a lookup returns more than one match.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

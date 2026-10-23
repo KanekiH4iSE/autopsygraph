@@ -1,0 +1,15 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP03",
+  "contributing": [],
+  "confidence": 0.9,
+  "evidence_ids": [
+    "run_087-e2",
+    "run_087-e3"
+  ],
+  "explanation": "The agent incorrectly listed orders for customer C-019 instead of the intended customer C-031. This mismatch led to the retrieval of the wrong latest order, resulting in a mismatch in the expected order ID and shipment status.",
+  "counterfactual": "Ask which customer the user means (the request names a city) and continue with the matching record.",
+  "recommendation": "Require a clarifying question when a lookup returns more than one match.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

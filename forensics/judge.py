@@ -125,7 +125,7 @@ def judge(run_id: str, timeline: list[dict], answer: str, hits: list[Hit], claim
             f"<divergence_candidate>step {rules.root_step_idx}, {rules.pattern_code}</divergence_candidate>")
     try:
         from openai import OpenAI
-        client = OpenAI(timeout=30)
+        client = OpenAI(timeout=30, max_retries=1)
         resp = client.chat.completions.create(
             model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"), temperature=0,
             response_format={"type": "json_object"},
@@ -136,11 +136,14 @@ def judge(run_id: str, timeline: list[dict], answer: str, hits: list[Hit], claim
         v = Verdict.model_validate(data)
         if v.pattern_code not in codes or v.root_step_idx not in steps:
             return rules
-        if not v.recommendation:
-            v.recommendation = rules.recommendation
-        # Provenance stays deterministic: contributing hits and cited evidence come from the detectors.
+        # The LLM chooses among candidates and writes the narrative; everything checkable stays deterministic:
+        # contributing hits, cited evidence, the counterfactual and the fix come from the rules.
         v.contributing = rules.contributing
         v.evidence_ids = rules.evidence_ids
+        v.counterfactual = rules.counterfactual
+        v.recommendation = rules.recommendation
+        if len(v.explanation) < 40:
+            v.explanation = rules.explanation
         if v.root_step_idx != rules.root_step_idx:
             v.confidence = min(v.confidence, 0.6)
             v.disagrees_with_rules = True

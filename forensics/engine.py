@@ -6,6 +6,8 @@ Usage: python -m forensics.engine            (investigate all failed runs)
 from __future__ import annotations
 
 import json
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from forensics.claims import claim_verdicts, failed_runs
@@ -75,7 +77,16 @@ def fleet_context(pattern: str | None, tool: str | None) -> str:
     return ""
 
 
+_WRITE_LOCK = threading.Lock()
+
+
 def _write_diagnosis(run_id: str, v, hits) -> None:
+    # Reads run in parallel; writes are serialised so concurrent runs never deadlock on shared FailurePattern nodes.
+    with _WRITE_LOCK:
+        _write_diagnosis_locked(run_id, v, hits)
+
+
+def _write_diagnosis_locked(run_id: str, v, hits) -> None:
     write("MATCH (:ReasoningTrace {id: $run_id})-[:HAS_STEP]->(st:ReasoningStep) REMOVE st.flags, st.severity",
           run_id=run_id)
     flags: dict[int, dict] = {}
@@ -112,11 +123,11 @@ def _write_diagnosis(run_id: str, v, hits) -> None:
 
 def investigate(run_id: str, use_cache: bool = True, fixes: dict | None = None) -> dict:
     """Full investigation of one run; writes the Diagnosis and returns verdict + context for the UI."""
-    tl = timeline(run_id)
-    header = run_header(run_id)
-    hits = run_all(run_id)
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        f_tl, f_head = pool.submit(timeline, run_id), pool.submit(run_header, run_id)
+        f_hits, f_claims = pool.submit(run_all, run_id), pool.submit(claim_verdicts, run_id)
+        tl, header, hits, claims = f_tl.result(), f_head.result(), f_hits.result(), f_claims.result()
     root = find_root(hits)
-    claims = claim_verdicts(run_id)
     rules = rules_verdict(tl, root, claims, fixes or _fixes())
     if rules is None:
         return {"run": run_id, "verdict": None, "hits": [], "claims": claims, "fleet": ""}
@@ -130,7 +141,8 @@ def investigate(run_id: str, use_cache: bool = True, fixes: dict | None = None) 
 
 def investigate_all(use_cache: bool = True) -> list[dict]:
     fixes = _fixes()
-    return [investigate(r, use_cache=use_cache, fixes=fixes) for r in failed_runs()]
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        return list(pool.map(lambda r: investigate(r, use_cache=use_cache, fixes=fixes), failed_runs()))
 
 
 # ---------- fleet queries ----------

@@ -1,6 +1,7 @@
 """Cypher detectors. Each runs one parameterised read query for a single run and returns Hits."""
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
 
 from graph.db import read
@@ -132,11 +133,12 @@ def missing_required_step(run_id: str) -> list[Hit]:
 
 
 def wrong_tool_plan(run_id: str) -> list[Hit]:
-    """FP01: a required tool never succeeded and the agent used an unplanned tool in its place."""
+    """FP01: a required tool was never called and the agent used an unplanned tool in its place.
+    (A required tool that was called but errored is FP04, not FP01.)"""
     rows = read("""
         MATCH (r:ReasoningTrace {id: $run_id})-[:FOR_TASK]->(:Task)-[:HAS_GROUND_TRUTH]->(gt:GroundTruth)
         WITH r, gt, [rt IN gt.required_tools WHERE NOT EXISTS {
-               MATCH (r)-[:HAS_STEP]->(:ReasoningStep)-[:USES_TOOL]->(:ToolCall {tool_name: rt, status: 'ok'}) }] AS unmet
+               MATCH (r)-[:HAS_STEP]->(:ReasoningStep)-[:USES_TOOL]->(:ToolCall {tool_name: rt}) }] AS unmet
         WHERE size(unmet) > 0
         MATCH (r)-[:HAS_STEP]->(st:ReasoningStep)-[:USES_TOOL]->(tc:ToolCall)
         WHERE NOT tc.tool_name IN gt.expected_tools
@@ -150,6 +152,7 @@ DETECTORS = [ignored_error, invalid_args, retry_loop, unsupported_claim, stale_e
 
 
 def run_all(run_id: str) -> list[Hit]:
-    """Run every detector for one run, ordered by step then severity."""
-    hits = [h for d in DETECTORS for h in d(run_id)]
+    """Run every detector for one run (in parallel: each is one round trip to Aura), ordered by step then severity."""
+    with ThreadPoolExecutor(max_workers=len(DETECTORS)) as pool:
+        hits = [h for result in pool.map(lambda d: d(run_id), DETECTORS) for h in result]
     return sorted(hits, key=lambda h: (h.step_idx, -h.severity))

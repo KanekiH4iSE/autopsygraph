@@ -1,0 +1,14 @@
+{
+  "root_step_idx": 1,
+  "pattern_code": "FP05",
+  "contributing": [
+    "FP11@1"
+  ],
+  "confidence": 0.9,
+  "evidence_ids": [],
+  "explanation": "The agent claimed a return policy of 90 days, which is inconsistent with the expected policy of 30 days. This discrepancy indicates a failure in verifying the correct return policy before providing the answer in step 1.",
+  "counterfactual": "Look up the policy first and state only facts backed by tool output.",
+  "recommendation": "Assert only claims linked to tool evidence.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

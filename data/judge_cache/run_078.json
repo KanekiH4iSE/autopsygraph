@@ -1,0 +1,14 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP05",
+  "contributing": [
+    "FP11@2"
+  ],
+  "confidence": 0.9,
+  "evidence_ids": [],
+  "explanation": "In step 2, the agent claimed a 25% refund without sufficient evidence to support this compensation. The lack of supporting evidence for the claim and the failure to search the policy led to a mismatch in the expected credit amount. This indicates that the agent did not follow the necessary procedures to validate the claim before providing an answer.",
+  "counterfactual": "Look up the policy first and state only facts backed by tool output.",
+  "recommendation": "Assert only claims linked to tool evidence.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

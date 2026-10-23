@@ -109,7 +109,7 @@ def page_runs() -> None:
     only_failed = st.toggle("Failed runs only", value=True)
     view = df[~df["success"]] if only_failed else df
     view = view.assign(status=view["success"].map({True: "🟢 success", False: "🔴 failed"}))
-    st.dataframe(view[["run", "status", "intent", "request", "outcome"]], hide_index=True, use_container_width=True)
+    st.dataframe(view[["run", "status", "intent", "request", "outcome"]], hide_index=True, width="stretch")
     ids = view["run"].tolist()
     pick = st.selectbox("Open run", ids, index=ids.index("run_017") if "run_017" in ids else 0)
     if st.button("Open in Run detail", type="primary"):
@@ -133,7 +133,7 @@ def page_detail() -> None:
     left, right = st.columns([3, 2])
     with left:
         st.subheader("Timeline")
-        st.graphviz_chart(dot(tl, cl, verdict), use_container_width=True)
+        st.graphviz_chart(dot(tl, cl, verdict), width="stretch")
         st.caption("grey = step · amber = contributing · red = root cause · blue = evidence (dark = cited) · "
                    "purple = ground truth · dashed = what should have happened")
     with right:
@@ -142,9 +142,9 @@ def page_detail() -> None:
         st.markdown("**Claims vs ground truth**")
         st.dataframe(pd.DataFrame([{"fact": c["fact"], "expected": c["expected"], "agent said": c["asserted"],
                                     "verdict": c["verdict"], "stale evidence": c["stale"]} for c in cl]),
-                     hide_index=True, use_container_width=True)
+                     hide_index=True, width="stretch")
         if not h.get("success"):
-            if st.button("🔍 Investigate", type="primary", use_container_width=True):
+            if st.button("🔍 Investigate", type="primary", width="stretch"):
                 with st.spinner("Running graph detectors and the judge…"):
                     st.session_state[verdict_key] = investigate(run_id)
                 st.rerun()
@@ -191,12 +191,12 @@ def page_fleet() -> None:
             st.caption("No diagnoses yet — run `.\\run.ps1 detect`.")
     with right:
         st.subheader("Tools")
-        st.dataframe(pd.DataFrame(engine.fleet_tools()), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(engine.fleet_tools()), hide_index=True, width="stretch")
         st.subheader("Ignored errors")
-        st.dataframe(pd.DataFrame(ign), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(ign), hide_index=True, width="stretch")
     if m:
         with st.expander("Accuracy per pattern"):
-            st.dataframe(pd.DataFrame(m["per_pattern"]).T, use_container_width=True)
+            st.dataframe(pd.DataFrame(m["per_pattern"]).T, width="stretch")
 
 
 PAGES = {"Runs": page_runs, "Run detail": page_detail, "Fleet": page_fleet}

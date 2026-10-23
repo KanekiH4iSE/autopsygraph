@@ -1,0 +1,17 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP04",
+  "contributing": [
+    "FP12@4",
+    "FP06@4"
+  ],
+  "confidence": 0.9,
+  "evidence_ids": [
+    "run_056-e3"
+  ],
+  "explanation": "The process encountered a timeout error while checking refund eligibility for order ORD-1001. This error was ignored, leading to a subsequent refund being issued without confirming eligibility, which was a critical step (step 2). Ignoring the timeout resulted in a mismatch in the refund eligibility claim.",
+  "counterfactual": "Retry check_refund_eligibility once; if it still fails, tell the user the check is unavailable and escalate to a human.",
+  "recommendation": "Retry once, then escalate. Add a guard blocking write tools without a successful eligibility result.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

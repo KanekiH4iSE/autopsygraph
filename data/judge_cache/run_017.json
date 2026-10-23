@@ -1,0 +1,18 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP04",
+  "contributing": [
+    "FP07@3",
+    "FP12@4",
+    "FP06@4"
+  ],
+  "confidence": 0.9,
+  "evidence_ids": [
+    "run_017-e3"
+  ],
+  "explanation": "The process failed because the check for refund eligibility timed out at step 2, and no retry or escalation was attempted. This led to reliance on stale evidence in step 3, which incorrectly asserted refund eligibility. Consequently, a refund was issued without proper verification, violating protocol.",
+  "counterfactual": "Retry check_refund_eligibility once; if it still fails, tell the user the check is unavailable and escalate to a human.",
+  "recommendation": "Retry once, then escalate. Add a guard blocking write tools without a successful eligibility result.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

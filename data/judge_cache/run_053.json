@@ -1,0 +1,14 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP04",
+  "contributing": [],
+  "confidence": 0.9,
+  "evidence_ids": [
+    "run_053-e3"
+  ],
+  "explanation": "The agent encountered a timeout error while checking refund eligibility for order ORD-1007. Instead of retrying or escalating the issue, the agent proceeded to provide an answer based on policy, which led to a mismatch in the expected refund eligibility outcome.",
+  "counterfactual": "Retry check_refund_eligibility once; if it still fails, tell the user the check is unavailable and escalate to a human.",
+  "recommendation": "Retry once, then escalate. Add a guard blocking write tools without a successful eligibility result.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

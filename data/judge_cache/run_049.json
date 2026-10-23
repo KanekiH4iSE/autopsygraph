@@ -1,0 +1,17 @@
+{
+  "root_step_idx": 2,
+  "pattern_code": "FP04",
+  "contributing": [
+    "FP12@4",
+    "FP06@4"
+  ],
+  "confidence": 0.9,
+  "evidence_ids": [
+    "run_049-e3"
+  ],
+  "explanation": "The process encountered a timeout error while checking refund eligibility at step 2, which was not retried or escalated. This led to an incorrect assumption of refund eligibility in step 4, resulting in a mismatch with the policy that excludes final-sale items. The failure to handle the timeout properly at step 2 directly contributed to the erroneous refund issuance.",
+  "counterfactual": "Retry check_refund_eligibility once; if it still fails, tell the user the check is unavailable and escalate to a human.",
+  "recommendation": "Retry once, then escalate. Add a guard blocking write tools without a successful eligibility result.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}

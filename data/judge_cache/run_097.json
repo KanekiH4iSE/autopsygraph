@@ -1,0 +1,14 @@
+{
+  "root_step_idx": 1,
+  "pattern_code": "FP07",
+  "contributing": [],
+  "confidence": 1.0,
+  "evidence_ids": [
+    "run_097-e1"
+  ],
+  "explanation": "The agent provided an incorrect refund window of 60 days based on stale evidence, which was superseded by a policy stating a 30-day window. This mismatch occurred because the agent relied on outdated information in step 1.",
+  "counterfactual": "Use the current policy version and ignore superseded results.",
+  "recommendation": "Filter superseded policy versions out of search results.",
+  "source": "llm+rules",
+  "disagrees_with_rules": false
+}
