@@ -1,166 +1,166 @@
-# AutopsyGraph — план команды из двух человек
+# AutopsyGraph — two-person team plan
 
-**Хакатон:** Graphs Gone Wild (NODES 2026 pop-up), CODE University, Donaustraße 44, Берлин, 23.10.2026
-**Хак:** 16:30–18:30 и 19:00–20:00 · **Пицца:** 18:30–19:00 · **Питчи:** 20:00–20:30 (≈2 минуты на команду)
-**Проект:** `C:\Users\User\projects\autopsygraph` · **База:** [console.neo4j.io](https://console.neo4j.io) → проект FiranAI → Instance01
+**Hackathon:** Graphs Gone Wild (NODES 2026 pop-up), CODE University, Donaustraße 44, Berlin, 23 Oct 2026
+**Hacking:** 16:30–18:30 and 19:00–20:00 · **Pizza:** 18:30–19:00 · **Pitches:** 20:00–20:30 (~2 minutes per team)
+**Project:** `C:\Users\User\projects\autopsygraph` · **Database:** [console.neo4j.io](https://console.neo4j.io) → project FiranAI → Instance01
 
-> Идея в одной фразе: *AutopsyGraph превращает каждый прогон AI-агента в граф доказательств и для каждого
-> упавшего прогона находит первую решающую ошибку, доказывает её и считает, как часто она повторяется.*
-
----
-
-## 0. Что уже готово (до старта)
-
-- Датасет: 36 прогонов (12 успешных, 24 упавших), тесты зелёные.
-- Схема графа и загрузчик; данные **уже в Aura** (36 прогонов, 116 шагов, 80 вызовов тулов).
-- `.env` с доступом к Aura. `LLM_ENABLED=false` — ключа Anthropic нет, судья работает на правилах.
-- Главная цифра для питча уже проверена: **`check_refund_eligibility` упал по таймауту в 8 прогонах, в 7 из них ошибку проигнорировали.**
-- Остаётся сделать: детекторы → судья → интерфейс (шаги 4–8 в `CLAUDE.md`).
+> The idea in one sentence: *AutopsyGraph turns every AI-agent run into an evidence graph, and for every failed run
+> it finds the first decisive mistake, proves it, and counts how often it recurs.*
 
 ---
 
-## 1. Роли
+## 0. Already done (before the start)
 
-| | **A — Билдер** | **B — Демо и граф** |
+- Dataset: 36 runs (12 successful, 24 failed), tests green.
+- Graph schema and loader; the data is **already in Aura** (36 runs, 116 steps, 80 tool calls).
+- `.env` with Aura access. `LLM_ENABLED=false` — no Anthropic key, so the judge runs on rules only.
+- The headline number for the pitch is already verified: **`check_refund_eligibility` timed out in 8 runs, and the agent ignored the error in 7 of them.**
+- Still to build: detectors → judge → UI (milestones 4–8 in `CLAUDE.md`).
+
+---
+
+## 1. Roles
+
+| | **A — Builder** | **B — Demo & Graph** |
 |---|---|---|
-| Главная задача | Довести код до рабочего демо | Сделать так, чтобы судьи поняли и запомнили |
-| Сидит | За ноутбуком с Claude Code | За вторым ноутбуком с Aura и слайдами |
-| Решает | Что резать в коде | Что говорить и показывать |
-| На питче | Щёлкает демо | Говорит |
+| Main job | Get the code to a working demo | Make sure the judges understand and remember it |
+| Sits at | The laptop running Claude Code | The second laptop with Aura and the slides |
+| Decides | What gets cut from the code | What gets said and shown |
+| During the pitch | Clicks through the demo | Talks |
 
-**Общие правила**
-- Сверка каждые 30 минут, не дольше 2 минут: что готово, что застряло, что режем.
-- Застряли больше чем на 10 минут — берём запасной вариант (раздел 5), не чиним дальше.
-- После 18:30 никаких новых фич, только доводка и стабильность.
-- Ни один пароль и ключ не попадает в чат, на слайды или на экран во время демо.
-
----
-
-## 2. Обязанности A — Билдер
-
-### Подготовка (16:15–16:30, во время вводной)
-- [ ] Открыть терминал в `C:\Users\User\projects\autopsygraph`.
-- [ ] Проверить базу: `.\run.ps1 ping` → должна напечататься версия `5.27-aura`.
-- [ ] Проверить тесты: `.\run.ps1 test` → `3 passed`.
-- [ ] Запустить Claude Code в этой папке.
-
-### Шаг 4 (16:30–17:15): детекторы
-Сказать Claude Code: **«Начинай с milestone 4 по CLAUDE.md. Milestones 1–3 уже сделаны, данные в Aura.»**
-- [ ] Появились `forensics/detectors.py`, `divergence.py`, `claims.py`.
-- [ ] `.\.venv\Scripts\python.exe -m pytest -q tests\test_detectors.py` — зелёный.
-- [ ] Проверено: run_017 → корень на шаге 2, FP04; run_087 → шаг 2, FP03; run_066 → шаг 2, FP05; run_003 → нет серьёзных срабатываний.
-- [ ] Коммит.
-
-### Шаг 5 (17:15–17:40): судья и Diagnosis
-- [ ] `forensics/judge.py` работает при `LLM_ENABLED=false` (только правила).
-- [ ] `.\run.ps1 detect` → узлы `Diagnosis` записаны для всех 24 упавших прогонов.
-- [ ] Коммит.
-
-### Шаг 6 (17:40–18:00): точность
-- [ ] `.\run.ps1 validate` печатает точность по корневому шагу и по паттерну, пишет `data/metrics.json`.
-- [ ] **Сообщить B цифру точности** (нужна для питча).
-- [ ] Точность ниже 85% → сначала чинить детекторы, интерфейс потом.
-- [ ] Коммит.
-
-### Шаг 8а (18:00–18:30): страница Run detail
-- [ ] `.\run.ps1 ui` → Streamlit открывается.
-- [ ] Список прогонов, выбор run_017, граф таймлайна (graphviz), кнопка **Investigate** → карточка вердикта.
-- [ ] Передать B адрес страницы для тестов.
-- [ ] Коммит.
-
-### 18:30–19:00 — пицца + сверка с B
-- [ ] Список багов от B: чиним только то, что видно в демо.
-
-### Шаг 8б (19:00–19:40): страница Fleet
-- [ ] Столбики «ошибки по паттернам», таблица тулов, крупная цифра «8 таймаутов → 7 проигнорированы».
-- [ ] Точность из `data/metrics.json`.
-- [ ] Подпись внизу каждой страницы: *«We analyse observable agent behaviour only…»*.
-- [ ] Коммит.
-
-### 19:40–20:00 — заморозка
-- [ ] `.\run.ps1 all` с нуля проходит без ошибок.
-- [ ] Финальный коммит. **Код больше не трогаем.**
-- [ ] Открыть вкладки заранее: Runs → run_017, Fleet. Увеличить шрифт браузера (Ctrl +).
-- [ ] Два прогона демо вместе с B.
-
-### Если останется время (только после 19:40 и только если всё зелёное)
-- Подключить `mcp-neo4j-cypher --read-only` к Claude Code и показать вопрос к графу вживую. Если не заработало за 10 минут, бросаем.
+**Shared rules**
+- Sync every 30 minutes, 2 minutes max: what's done, what's stuck, what we cut.
+- Stuck for more than 10 minutes → take the fallback (section 5), stop fixing.
+- After 18:30, no new features — only polish and stability.
+- No password or key ever goes into chat, onto a slide, or on screen during the demo.
 
 ---
 
-## 3. Обязанности B — Демо и граф
+## 2. A — Builder: responsibilities
 
-### Подготовка (15:00–16:30)
-- [ ] На регистрации спросить организаторов (Zaid Zaim):
-  - можно ли приносить заранее написанный код и данные (у нас готовы генератор данных и загрузчик);
-  - в каком формате сдавать проект и сколько минут на питч;
-  - какие новые инструменты или партнёров объявят.
-- [ ] На вводной записать всё, что можно быстро встроить (например, Aura Agents), и передать A.
-- [ ] Войти в [console.neo4j.io](https://console.neo4j.io) → FiranAI → Instance01 → **Query**.
+### Setup (16:15–16:30, during the intro talk)
+- [ ] Open a terminal in `C:\Users\User\projects\autopsygraph`.
+- [ ] Check the database: `.\run.ps1 ping` → should print version `5.27-aura`.
+- [ ] Check the tests: `.\run.ps1 test` → `3 passed`.
+- [ ] Start Claude Code in this folder.
 
-### 16:30–17:30 — запасные Cypher-запросы
-Сохранить в Aura Query (избранное) четыре запроса из раздела 6 и прогнать каждый:
-- [ ] Q1 граф run_017
-- [ ] Q2 неверная Мария Лопес (run_087)
-- [ ] Q3 цифра для питча (8 → 7)
-- [ ] Q4 ответ агента против эталона (run_017)
-- [ ] Сделать скриншоты результатов в папку `screenshots/` (запасной вариант, если упадёт Wi-Fi).
+### Milestone 4 (16:30–17:15): detectors
+Tell Claude Code: **"Start from milestone 4 in CLAUDE.md. Milestones 1–3 are done and the data is in Aura."**
+- [ ] `forensics/detectors.py`, `divergence.py`, `claims.py` exist.
+- [ ] `.\.venv\Scripts\python.exe -m pytest -q tests\test_detectors.py` is green.
+- [ ] Verified: run_017 → root at step 2, FP04; run_087 → step 2, FP03; run_066 → step 2, FP05; run_003 → no high-severity hits.
+- [ ] Commit.
 
-### 17:30–18:00 — слайды (3 штуки, не больше)
-- [ ] **Слайд 1 — проблема:** «Агенты ломаются тихо: каждый запрос возвращает 200, ответ звучит уверенно».
-- [ ] **Слайд 2 — как работает:** прогон → граф (шаг → вызов тула → наблюдение → доказательство → утверждение → эталон) → проверки на Cypher → вердикт.
-- [ ] **Слайд 3 — цифры:** «8 таймаутов, 7 проигнорированы» + точность от A + честная оговорка про синтетические данные.
+### Milestone 5 (17:15–17:40): judge and Diagnosis
+- [ ] `forensics/judge.py` works with `LLM_ENABLED=false` (rules only).
+- [ ] `.\run.ps1 detect` → `Diagnosis` nodes written for all 24 failed runs.
+- [ ] Commit.
 
-### 18:00–18:30 — тестирование интерфейса
-- [ ] Пройти сценарий демо (раздел 4) в интерфейсе от A.
-- [ ] Записывать баги одной строкой: что нажал → что ждал → что увидел. Отдавать A пачкой на сверке, не дёргать каждые 2 минуты.
+### Milestone 6 (17:40–18:00): accuracy
+- [ ] `.\run.ps1 validate` prints root-step and pattern accuracy and writes `data/metrics.json`.
+- [ ] **Give B the accuracy number** (needed for the pitch).
+- [ ] Accuracy below 85% → fix the detectors first, UI comes later.
+- [ ] Commit.
 
-### 19:00–19:40 — финальный питч
-- [ ] Вставить цифру точности в слайд 3 и в текст.
-- [ ] Прочитать питч вслух с таймером: ровно 2:00.
-- [ ] Подготовить ответы на вопросы (раздел 7).
+### Milestone 8a (18:00–18:30): Run detail page
+- [ ] `.\run.ps1 ui` → Streamlit opens.
+- [ ] Runs list, select run_017, timeline graph (graphviz), **Investigate** button → verdict card.
+- [ ] Send B the page URL for testing.
+- [ ] Commit.
 
-### 19:40–20:00 — запасное видео и репетиция
-- [ ] Записать экран, где A проходит демо (OBS, Xbox Game Bar `Win+G` или телефон). 1,5–2 минуты.
-- [ ] Две полные репетиции вместе с A.
+### 18:30–19:00 — pizza + sync with B
+- [ ] Go through B's bug list: fix only what shows up in the demo.
 
-### 20:00 — питч
-- [ ] Говорит B, щёлкает A. Если демо зависло, B без паузы переходит на видео или скриншоты.
+### Milestone 8b (19:00–19:40): Fleet page
+- [ ] Bar chart of failures by pattern, failing-tools table, big number "8 timeouts → 7 ignored".
+- [ ] Accuracy from `data/metrics.json`.
+- [ ] Footer on every page: *"We analyse observable agent behaviour only…"*.
+- [ ] Commit.
+
+### 19:40–20:00 — code freeze
+- [ ] `.\run.ps1 all` passes from scratch with no errors.
+- [ ] Final commit. **No more code changes.**
+- [ ] Pre-open the tabs: Runs → run_017, Fleet. Increase browser zoom (Ctrl +).
+- [ ] Two full demo run-throughs with B.
+
+### If there is time left (only after 19:40 and only if everything is green)
+- Hook `mcp-neo4j-cypher --read-only` into Claude Code and ask the graph a question live. If it doesn't work within 10 minutes, drop it.
 
 ---
 
-## 4. Сценарий демо и текст питча (2 минуты)
+## 3. B — Demo & Graph: responsibilities
 
-| Время | Экран (щёлкает A) | Текст (говорит B) |
+### Setup (15:00–16:30)
+- [ ] At check-in, ask the organisers (Zaid Zaim):
+  - may we bring pre-written code and data (our data generator and loader are ready);
+  - how do we submit the project and how many minutes is the pitch;
+  - which new tools or partners will be announced.
+- [ ] During the intro, note anything we could plug in quickly (e.g. Aura Agents) and tell A.
+- [ ] Log in to [console.neo4j.io](https://console.neo4j.io) → FiranAI → Instance01 → **Query**.
+
+### 16:30–17:30 — fallback Cypher queries
+Save the four queries from section 6 in Aura Query (favourites) and run each one:
+- [ ] Q1 run_017 graph
+- [ ] Q2 the wrong Maria Lopez (run_087)
+- [ ] Q3 the pitch number (8 → 7)
+- [ ] Q4 agent answer vs ground truth (run_017)
+- [ ] Take screenshots of the results into `screenshots/` (fallback if the wifi dies).
+
+### 17:30–18:00 — slides (3 max)
+- [ ] **Slide 1 — the problem:** "Agents fail quietly: every call returns 200 and the answer sounds confident."
+- [ ] **Slide 2 — how it works:** run → graph (step → tool call → observation → evidence → claim → ground truth) → Cypher checks → verdict.
+- [ ] **Slide 3 — the numbers:** "8 timeouts, 7 ignored" + accuracy from A + an honest note that the data is synthetic.
+
+### 18:00–18:30 — UI testing
+- [ ] Walk through the demo script (section 4) in A's UI.
+- [ ] Log bugs as one line each: what I clicked → what I expected → what I saw. Hand them to A in a batch at the sync, don't interrupt every 2 minutes.
+
+### 19:00–19:40 — final pitch
+- [ ] Put the accuracy number into slide 3 and the script.
+- [ ] Read the pitch out loud with a timer: exactly 2:00.
+- [ ] Prepare answers to the questions (section 7).
+
+### 19:40–20:00 — backup video and rehearsal
+- [ ] Screen-record A walking through the demo (OBS, Xbox Game Bar `Win+G`, or a phone). 1.5–2 minutes.
+- [ ] Two full rehearsals with A.
+
+### 20:00 — pitch
+- [ ] B talks, A clicks. If the demo freezes, B switches to the video or screenshots without pausing.
+
+---
+
+## 4. Demo flow and pitch script (2 minutes)
+
+| Time | Screen (A clicks) | Script (B says) |
 |---|---|---|
-| 0:00–0:15 | Слайд 1 | «Агенты ломаются тихо. Каждый вызов вернул 200, ответ звучит уверенно, а клиенту вернули деньги, которые возвращать было нельзя.» |
-| 0:15–0:30 | Страница Runs | «Мы записываем каждый прогон агента поддержки в Neo4j как граф: запрос, вызовы тулов, аргументы, ответы, доказательства, итоговые утверждения. 36 прогонов, 24 упали.» |
-| 0:30–1:10 | run_017 → **Investigate** | «Агент вернул $189 за палатку из финальной распродажи. Где ошибка? Не на шаге 4, где возврат. Корень — шаг 2: проверка права на возврат упала по таймауту, агент не повторил запрос и не эскалировал, а взял устаревшую политику на 60 дней. Возврат — уже следствие. Каждый вывод ссылается на узел в графе.» |
-| 1:10–1:35 | Fleet | «А теперь по всем прогонам сразу, одним запросом: этот тул упал в 8 прогонах, и в 7 агент молча проигнорировал ошибку. Это не случайность, это пропущенное правило. Три исправления: правило в промпте, защита в коде, фильтр устаревших политик.» |
-| 1:35–2:00 | Слайд 3 | «На размеченных синтетических прогонах мы находим корневой шаг в X% случаев. Мы анализируем, что агент сделал, а не что он думал.» |
+| 0:00–0:15 | Slide 1 | "Agents fail quietly. Every call returned 200, the answer sounded confident — and the customer got a refund they were never entitled to." |
+| 0:15–0:30 | Runs page | "We record every run of a support agent in Neo4j as a graph: the request, tool calls, arguments, outputs, evidence and final claims. 36 runs, 24 failed." |
+| 0:30–1:10 | run_017 → **Investigate** | "The agent refunded $189 for a final-sale tent. Where did it go wrong? Not at step 4, the refund. The root cause is step 2: the eligibility check timed out, the agent neither retried nor escalated, and fell back to a superseded 60-day policy. The refund is just the symptom. Every conclusion points to a node in the graph." |
+| 1:10–1:35 | Fleet | "Now across all runs, in one query: this tool timed out in 8 runs, and in 7 the agent silently ignored the error. That's not bad luck, that's a missing rule. Three fixes: a prompt rule, a code guardrail, and filtering out superseded policies." |
+| 1:35–2:00 | Slide 3 | "On labelled synthetic runs we find the root-cause step X% of the time. We analyse what the agent did, not what it thought." |
 
 ---
 
-## 5. Если что-то сломалось
+## 5. If something breaks
 
-| Проблема | Что делаем | Кто |
+| Problem | What we do | Who |
 |---|---|---|
-| Aura не отвечает / на паузе | Открыть console.neo4j.io → Instance01 → Resume, подождать 1–2 минуты, `.\run.ps1 ping` | A |
-| Данные в графе испорчены | `.\run.ps1 reset` затем `.\run.ps1 load` (≈1 минута) | A |
-| Wi-Fi упал | Раздать интернет с телефона | B |
-| Детектор не получается на Cypher | Проверка на Python по JSON, Cypher оставляем только для демо-запросов | A |
-| Точность ниже 85% в 18:00 | Чинить детекторы, интерфейс упрощаем до одной страницы | A |
-| Streamlit не работает к 19:30 | Демо через Aura Query (запросы Q1–Q4) + слайды | B |
-| Демо зависло на сцене | Сразу запасное видео или скриншоты | B |
+| Aura not responding / paused | Open console.neo4j.io → Instance01 → Resume, wait 1–2 minutes, `.\run.ps1 ping` | A |
+| Graph data corrupted | `.\run.ps1 reset` then `.\run.ps1 load` (~1 minute) | A |
+| Wifi down | Phone hotspot | B |
+| A detector won't work in Cypher | Do the check in Python over the JSON; keep Cypher only for the demo queries | A |
+| Accuracy below 85% at 18:00 | Fix the detectors; cut the UI down to one page | A |
+| Streamlit not working by 19:30 | Demo via Aura Query (queries Q1–Q4) + slides | B |
+| Demo freezes on stage | Switch straight to the backup video or screenshots | B |
 
-**Режем в таком порядке:** MCP-запасная цель → вкладка neo4j-viz → красота страницы Fleet → лишние паттерны (FP01, FP03).
-**Не режем никогда:** вердикт по run_017, граф таймлайна, цифру «8 → 7».
+**Cut in this order:** MCP stretch goal → neo4j-viz tab → Fleet page polish → extra patterns (FP01, FP03).
+**Never cut:** the run_017 verdict, the timeline graph, the "8 → 7" number.
 
 ---
 
-## 6. Запасные Cypher-запросы (для B, вставлять в Aura → Query)
+## 6. Fallback Cypher queries (for B, paste into Aura → Query)
 
-**Q1 — граф run_017 (картинка для демо)**
+**Q1 — run_017 graph (the demo picture)**
 ```cypher
 MATCH (r:ReasoningTrace {id: 'run_017'})-[:HAS_STEP]->(s:ReasoningStep)
 OPTIONAL MATCH p1 = (s)-[:USES_TOOL]->(:ToolCall)-[:RETURNED]->(:Observation)-[:RAISED|YIELDED]->()
@@ -168,7 +168,7 @@ OPTIONAL MATCH p2 = (r)-[:PRODUCED]->(:Answer)-[:ASSERTS]->(:Claim)-[:SUPPORTED_
 RETURN r, s, p1, p2
 ```
 
-**Q2 — неверная Мария Лопес (run_087)**
+**Q2 — the wrong Maria Lopez (run_087)**
 ```cypher
 MATCH (r:ReasoningTrace {id: 'run_087'})-[:FOR_TASK]->(:Task)-[:HAS_GROUND_TRUTH]->(:GroundTruth)
       -[:EXPECTS_ENTITY]->(want:Entity {type: 'customer'})
@@ -177,7 +177,7 @@ MATCH (r)-[:HAS_STEP]->(st:ReasoningStep)-[:USES_TOOL]->(tc:ToolCall)-[:HAS_ARG]
 RETURN st.idx AS step, tc.tool_name AS tool, got.key AS used, want.key AS expected
 ```
 
-**Q3 — главная цифра (проверено: 7)**
+**Q3 — the headline number (verified: 7)**
 ```cypher
 MATCH (r:ReasoningTrace)-[:HAS_STEP]->(st)-[:USES_TOOL]->(tc)-[:RETURNED]->(:Observation)-[:RAISED]->(err:Error)
 MATCH (r)-[:PRODUCED]->(ans:Answer)
@@ -189,7 +189,7 @@ WHERE NOT EXISTS {
 RETURN tc.tool_name AS tool, err.code AS error, count(DISTINCT r) AS runs_ignoring_it
 ```
 
-**Q4 — ответ агента против эталона (run_017)**
+**Q4 — agent answer vs ground truth (run_017)**
 ```cypher
 MATCH (r:ReasoningTrace {id: 'run_017'})-[:FOR_TASK]->(:Task)-[:HAS_GROUND_TRUTH]->(:GroundTruth)
       -[:EXPECTS_FACT]->(f:Fact)
@@ -201,24 +201,24 @@ RETURN f.key AS fact, f.value AS expected, c.value AS agent_said,
 
 ---
 
-## 7. Вопросы судей и ответы (для B)
+## 7. Judge questions and answers (for B)
 
-- **«Это же просто LangSmith / Langfuse?»** — Это хорошие хранилища трейсов. Мы добавляем связи как граф: утверждение ↔ доказательство ↔ вызов тула ↔ сущность, сверку с эталоном и Cypher-запросы сразу по всем прогонам.
-- **«Откуда вы знаете, что диагноз верный?»** — Ошибки мы вставляли сами и знаем правильный ответ, поэтому точность можно измерить. Это верхняя оценка: на настоящих длинных трейсах опубликованные результаты намного ниже (11% на TRAIL, 14,2% на Who&When).
-- **«Работает без эталона?»** — Проигнорированные ошибки, неподкреплённые утверждения, устаревшие данные и опасные действия находятся без эталона. Для неверных фактов и сущностей эталон нужен.
-- **«Вы читаете мысли модели?»** — Нет. Только наблюдаемое поведение, и каждый вердикт ссылается на вывод тулов.
-- **«Почему граф, а не логи?»** — Причина — это путь в графе: ошибка → устаревшее доказательство → утверждение → ответ. А «не было повтора после ошибки» — это один запрос `NOT EXISTS`.
+- **"Isn't this just LangSmith / Langfuse?"** — Those are great trace stores. What we add is provenance as a graph (claim ↔ evidence ↔ tool call ↔ entity), comparison against ground truth, and Cypher queries across all runs at once.
+- **"How do you know the diagnosis is right?"** — We injected the failures ourselves, so we know the right answer and can measure accuracy. It's an upper bound: published results on real, longer traces are much lower (11% on TRAIL, 14.2% on Who&When).
+- **"Does it work without ground truth?"** — Ignored errors, unsupported claims, stale evidence and unsafe actions are found without it. Wrong facts and wrong entities need a reference.
+- **"Can you see what the model was thinking?"** — No. Only observable behaviour, and every verdict cites tool outputs.
+- **"Why a graph and not logs?"** — The cause is a path in the graph: error → stale evidence → claim → answer. And "no retry after an error" is a single `NOT EXISTS` query.
 
 ---
 
-## 8. Где что лежит
+## 8. Where everything is
 
-| Что | Где |
+| What | Where |
 |---|---|
-| Проект | `C:\Users\User\projects\autopsygraph` |
-| Инструкция для Claude Code | `CLAUDE.md` |
-| Решения по ходу | `DECISIONS.md` |
-| Доступ к Aura | `.env` (не показывать на экране) |
-| Файл с паролем Aura | `C:\Users\User\Downloads\Neo4j-40d861fc-Created-2026-10-23.txt` |
-| Команды | `.\run.ps1 ping / test / reset / load / detect / validate / ui / all` |
-| План (документ) | https://claude.ai/artifact/3phKEEuFTW1CmbDcBfSrdk |
+| Project | `C:\Users\User\projects\autopsygraph` |
+| Instructions for Claude Code | `CLAUDE.md` |
+| Decisions log | `DECISIONS.md` |
+| Aura access | `.env` (never show on screen) |
+| Aura password file | `C:\Users\User\Downloads\Neo4j-40d861fc-Created-2026-10-23.txt` |
+| Commands | `.\run.ps1 ping / test / reset / load / detect / validate / ui / all` |
+| Plan (document) | https://claude.ai/artifact/3phKEEuFTW1CmbDcBfSrdk |
