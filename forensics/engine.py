@@ -59,6 +59,7 @@ def fleet_context(pattern: str | None, tool: str | None) -> str:
         rows = read("""
             MATCH (r:ReasoningTrace)-[:HAS_STEP]->(st)-[:USES_TOOL]->(tc:ToolCall {tool_name: $tool})
                   -[:RETURNED]->(:Observation)-[:RAISED]->(:Error)
+            WHERE r.replay_of IS NULL
             MATCH (r)-[:PRODUCED]->(ans:Answer)
             WITH r, st, tc, ans,
                  EXISTS { MATCH (r)-[:HAS_STEP]->(l)-[:USES_TOOL]->(tc2)
@@ -156,6 +157,7 @@ def fleet_patterns() -> list[dict]:
 def fleet_tools() -> list[dict]:
     return read("""
         MATCH (r:ReasoningTrace)-[:HAS_STEP]->()-[:USES_TOOL]->(tc:ToolCall)-[:INSTANCE_OF]->(t:Tool)
+        WHERE r.replay_of IS NULL
         WITH t, count(tc) AS calls,
              sum(CASE WHEN tc.status IN ['error', 'timeout'] THEN 1 ELSE 0 END) AS failed_calls,
              count(DISTINCT CASE WHEN r.success = false THEN r END) AS failed_runs
@@ -166,6 +168,7 @@ def fleet_tools() -> list[dict]:
 def fleet_ignored_errors() -> list[dict]:
     return read("""
         MATCH (r:ReasoningTrace)-[:HAS_STEP]->(st)-[:USES_TOOL]->(tc)-[:RETURNED]->(:Observation)-[:RAISED]->(err:Error)
+        WHERE r.replay_of IS NULL
         MATCH (r)-[:PRODUCED]->(ans:Answer)
         WITH tc.tool_name AS tool, err.code AS error, r,
              NOT (EXISTS { MATCH (r)-[:HAS_STEP]->(l)-[:USES_TOOL]->(tc2)

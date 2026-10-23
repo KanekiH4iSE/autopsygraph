@@ -341,6 +341,13 @@ and why it failed (e.g. `MISMATCH:refund_eligible;FORBIDDEN:issue_refund`). Pick
 - After Investigate: the verdict card — pattern, root step, confidence, source; *what happened / why*; *what it should
   have done*; *fix*; symptoms; cited evidence; and the cross-fleet line.
 
+**Apply fix & re-run (human-in-the-loop)** — after a verdict, the **🛠 Apply fix & re-run** button opens a confirmation
+dialog that shows the guardrail (e.g. *"Retry a failed tool once; if it still fails, escalate"*). Nothing happens until
+the user clicks **Approve**. Then the agent is re-run on the same customer request with the guardrail, the replay is
+written to Neo4j as a separate run (`run_017_fix`) linked by `(:ReasoningTrace)-[:REPLAY_OF]->(:ReasoningTrace)`, and the
+same 9 detectors re-check it. Result for run_017, run_087 and run_066: **the replay passes — all facts match, 0 decisive
+hits.** The original run is never modified, and replays are excluded from run lists and fleet statistics.
+
 **Fleet** — the big number (*check_refund_eligibility · UPSTREAM_TIMEOUT — ignored in 7 of 8 runs*), accuracy
 (100% / 100% on labelled synthetic runs), failures by pattern (bar chart), a tools table (calls, failed calls, error %,
 failed runs), and an ignored-errors table.

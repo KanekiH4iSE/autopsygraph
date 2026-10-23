@@ -13,6 +13,7 @@ import streamlit as st  # noqa: E402
 
 from forensics import engine  # noqa: E402
 from forensics.claims import all_runs, claim_verdicts  # noqa: E402
+from forensics.replay import GUARDRAILS, apply_fix  # noqa: E402
 
 st.set_page_config(page_title="AutopsyGraph", page_icon="🩻", layout="wide", initial_sidebar_state="expanded")
 
@@ -111,7 +112,34 @@ html, body, [class*="st-"] {-webkit-font-smoothing: antialiased; -moz-osx-font-s
   animation: ag-enter 320ms cubic-bezier(.2,.8,.2,1) both;}
 @keyframes ag-enter {from {opacity: 0; transform: translateY(8px); filter: blur(2px);}
                      to {opacity: 1; transform: none; filter: none;}}
-@media (prefers-reduced-motion: reduce) {.ag-verdict, .ag-fleet {animation: none;} .ag-kpi:hover {transform: none;}}
+/* timeline motion: steps cascade in, arrows draw, the root cause glows, the fix appears last */
+.ag-step {opacity: 0; animation: ag-pop 420ms cubic-bezier(.2,.8,.2,1) forwards;}
+.ag-draw {stroke-dasharray: 80; stroke-dashoffset: 80; animation: ag-draw-line 360ms ease-out forwards;}
+.ag-ghost {opacity: 0; animation: ag-enter 460ms cubic-bezier(.2,.8,.2,1) forwards;}
+.ag-root {animation: ag-glow 1.6s ease-in-out 600ms 3;}
+@keyframes ag-pop {from {opacity: 0; transform: translateY(10px) scale(.97);} to {opacity: 1; transform: none;}}
+@keyframes ag-draw-line {to {stroke-dashoffset: 0;}}
+@keyframes ag-glow {0%, 100% {filter: drop-shadow(0 0 0 rgba(229,72,77,0));}
+                    50% {filter: drop-shadow(0 0 10px rgba(229,72,77,.55));}}
+.ag-step, .ag-ghost {transform-box: fill-box; transform-origin: center;}
+/* page-level motion */
+.ag-kpi {animation: ag-enter 380ms cubic-bezier(.2,.8,.2,1) both;}
+.ag-kpi:nth-child(2) {animation-delay: 60ms;} .ag-kpi:nth-child(3) {animation-delay: 120ms;}
+.ag-kpi:nth-child(4) {animation-delay: 180ms;}
+.ag-title {animation: ag-enter 300ms ease-out both;}
+.ag-fleet .big span {display: inline-block; animation: ag-bounce 700ms cubic-bezier(.34,1.56,.64,1) 200ms both;}
+@keyframes ag-bounce {from {opacity: 0; transform: scale(.4);} to {opacity: 1; transform: scale(1);}}
+.ag-fixed {border: 1px solid #BFE6CC; border-left: 6px solid #2EAA5C; background: linear-gradient(180deg,#F2FBF5,#fff);
+  border-radius: 16px; padding: 1rem 1.2rem; margin: .8rem 0; animation: ag-enter 360ms cubic-bezier(.2,.8,.2,1) both;
+  box-shadow: 0 1px 2px rgba(46,170,92,.08), 0 12px 32px rgba(46,170,92,.10);}
+.ag-fixed .t {font-size: 1.2rem; font-weight: 800; color: #1F7A3F;}
+.ag-fixed .s {color: #3D6B4D;}
+.ag-fixed-bad {border-color: #F3C4C6; border-left-color: #E5484D; background: #FFF7F7;}
+.ag-fixed-bad .t {color: #B4232A;}
+@media (prefers-reduced-motion: reduce) {
+  .ag-verdict, .ag-fleet, .ag-kpi, .ag-title, .ag-fixed, .ag-fleet .big span, .ag-root {animation: none;}
+  .ag-step, .ag-ghost {animation: none; opacity: 1;} .ag-draw {animation: none; stroke-dashoffset: 0;}
+  .ag-kpi:hover {transform: none;}}
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
@@ -307,25 +335,28 @@ def svg_timeline(tl: list[dict], cl: list[dict], verdict: dict | None) -> str:
         h = max(96, yb - Y_STEP + 14)
         sw = 3 if s["idx"] == root else 2 if s["idx"] in flagged else 1.3
         step_box[s["idx"]] = (x, h)
-        parts.append(f'<rect x="{x}" y="{Y_STEP}" width="{W}" height="{h}" rx="14" fill="{fill}" stroke="{stroke}" '
-                     f'stroke-width="{sw}"/>' + body)
-        if s["idx"] == root:
-            parts.append(f'<rect x="{x + W - 92}" y="{Y_STEP - 11}" width="84" height="22" rx="11" fill="#E5484D"/>'
-                         f'<text x="{x + W - 50}" y="{Y_STEP + 4}" font-size="11" fill="#fff" font-weight="800" '
-                         f'text-anchor="middle">ROOT CAUSE</text>')
+        delay = i * 110
+        cls = ' class="ag-root"' if s["idx"] == root else ""
+        badge_svg = (f'<rect x="{x + W - 92}" y="{Y_STEP - 11}" width="84" height="22" rx="11" fill="#E5484D"/>'
+                     f'<text x="{x + W - 50}" y="{Y_STEP + 4}" font-size="11" fill="#fff" font-weight="800" '
+                     f'text-anchor="middle">ROOT CAUSE</text>') if s["idx"] == root else ""
+        parts.append(f'<g class="ag-step" style="animation-delay:{delay}ms"><rect{cls} x="{x}" y="{Y_STEP}" '
+                     f'width="{W}" height="{h}" rx="14" fill="{fill}" stroke="{stroke}" stroke-width="{sw}"/>'
+                     f'{body}{badge_svg}</g>')
     max_h = max(h for _, h in step_box.values())
     # arrows between steps
-    for a, b in zip(tl, tl[1:]):
+    for i, (a, b) in enumerate(zip(tl, tl[1:])):
         xa, _ = step_box[a["idx"]]
         xb, _ = step_box[b["idx"]]
         y = Y_STEP + 40
-        parts.append(f'<line x1="{xa + W + 4}" y1="{y}" x2="{xb - 6}" y2="{y}" stroke="#5B6170" stroke-width="2.2" '
-                     f'marker-end="url(#ag-arrow)"/>')
+        parts.append(f'<line class="ag-draw" style="animation-delay:{i * 110 + 80}ms" x1="{xa + W + 4}" y1="{y}" '
+                     f'x2="{xb - 6}" y2="{y}" stroke="#5B6170" stroke-width="2.2" marker-end="url(#ag-arrow)"/>')
     # evidence below steps
     y_ev0, bottom = Y_STEP + max_h + 26, Y_STEP + max_h
-    for s in tl:
+    for i, s in enumerate(tl):
         x, h = step_box[s["idx"]]
         y = y_ev0
+        parts.append(f'<g class="ag-step" style="animation-delay:{i * 110 + 260}ms">')
         for e in s.get("evidence") or []:
             lines = ([("STALE · superseded", 10, "#B4232A", "800")] if e["stale"] else []) + \
                     [(t, 12, "#16181D", "400") for t in _wrap(e["text"], 25, 4)]
@@ -341,11 +372,13 @@ def svg_timeline(tl: list[dict], cl: list[dict], verdict: dict | None) -> str:
                 parts.append(f'<text x="{x + W - 10}" y="{y + 14}" font-size="9" fill="#0060C7" font-weight="700" '
                              f'text-anchor="end">CITED</text>')
             y += eh + 10
+        parts.append("</g>")
         bottom = max(bottom, y)
     # ground truth right of the answer
     ans = next((s["idx"] for s in tl if s["kind"] == "answer"), None)
     x_gt = X0 + len(tl) * (W + GAP) + 44
     y = Y_STEP
+    parts.append(f'<g class="ag-step" style="animation-delay:{len(tl) * 110 + 120}ms">')
     for c in cl:
         lines = [("GROUND TRUTH", 11, "#6E56CF", "800")] + \
                 [(t, 14, "#4E2A84", "700") for t in _wrap_ident(c["fact"], 17)] + \
@@ -368,16 +401,18 @@ def svg_timeline(tl: list[dict], cl: list[dict], verdict: dict | None) -> str:
                          f'font-weight="700" text-anchor="middle">{esc(said)}</text>')
         y += gh + 12
         bottom = max(bottom, y)
+    parts.append("</g>")
     # "should have done" above the root
     if verdict and root in step_box:
         x, _ = step_box[root]
         cf = _wrap(verdict["counterfactual"], 64, 3)
         gw = min(W * 2 + GAP + 60, 470)
         body, _ = _texts(x + 12, 6, [("SHOULD HAVE", 10, "#1F7A3F", "800")] + [(t, 11, "#1F7A3F", "500") for t in cf])
-        parts.append(f'<rect x="{x}" y="8" width="{gw}" height="{14 + 15 * (len(cf) + 1)}" rx="12" fill="#F2FBF5" '
-                     f'stroke="#2EAA5C" stroke-width="1.5" stroke-dasharray="6 4"/>' + body)
-        parts.append(f'<line x1="{x + 30}" y1="{22 + 15 * (len(cf) + 1)}" x2="{x + 30}" y2="{Y_STEP - 4}" '
-                     f'stroke="#2EAA5C" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ag-arrow-g)"/>')
+        parts.append(f'<g class="ag-ghost" style="animation-delay:{len(tl) * 110 + 300}ms">'
+                     f'<rect x="{x}" y="8" width="{gw}" height="{14 + 15 * (len(cf) + 1)}" rx="12" fill="#F2FBF5" '
+                     f'stroke="#2EAA5C" stroke-width="1.5" stroke-dasharray="6 4"/>{body}'
+                     f'<line x1="{x + 30}" y1="{22 + 15 * (len(cf) + 1)}" x2="{x + 30}" y2="{Y_STEP - 4}" '
+                     f'stroke="#2EAA5C" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ag-arrow-g)"/></g>')
     width = x_gt + W + X0
     defs = ('<defs>'
             '<marker id="ag-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" '
@@ -436,8 +471,7 @@ def page_runs() -> None:
                         label_visibility="collapsed")
     if c2.button("Open run →", type="primary", width="stretch"):
         st.session_state["run"] = pick
-        st.session_state["nav"] = "Run detail"
-        st.rerun()
+        st.switch_page(DETAIL_PAGE)
 
 
 def verdict_card(result: dict, tl: list[dict]) -> None:
@@ -471,6 +505,38 @@ def verdict_card(result: dict, tl: list[dict]) -> None:
   {'<div class="ag-sec"><div class="h">Cited evidence</div>' + cited + '</div>' if cited else ''}
   {fleet_line}{ai}
 </div>""", unsafe_allow_html=True)
+
+
+@st.dialog("Apply the fix?", width="large")
+def confirm_fix(run_id: str, pattern: str) -> None:
+    """Human-in-the-loop: nothing is changed until the user approves."""
+    st.markdown(f'{badge(pattern)}', unsafe_allow_html=True)
+    st.markdown(f"**Guardrail to apply:** {GUARDRAILS[pattern]}")
+    st.markdown("AutopsyGraph will **re-run the agent on the same customer request with this guardrail**, write the "
+                "replay to Neo4j as a separate run linked to the original (`REPLAY_OF`), and re-check it with the "
+                "same 9 detectors. **The original run is not modified.**")
+    c1, c2 = st.columns(2)
+    if c1.button("✅ Approve & re-run", type="primary", width="stretch"):
+        with st.spinner("Re-running the agent with the guardrail and re-checking it…"):
+            st.session_state[f"replay_{run_id}"] = apply_fix(run_id, pattern)
+        st.rerun()
+    if c2.button("Cancel", width="stretch"):
+        st.rerun()
+
+
+def replay_card(fixed: dict) -> None:
+    ok = fixed["success"] and not fixed["decisive_hits"]
+    facts = "".join(f'<span class="ag-chip">{"✅" if c["verdict"] == "match" else "❌"} <code>{esc(c["fact"])}</code> = '
+                    f'{esc(c["asserted"])}</span>' for c in fixed["claims"])
+    head = ("✅ Fixed — the replay passes" if ok else "⚠️ The replay still fails")
+    sub = ("All expected facts match, no forbidden actions, 0 decisive detector hits." if ok else
+           "; ".join(fixed["reasons"]) or "Detectors still flag decisive steps.")
+    st.markdown(f'<div class="ag-fixed {"" if ok else "ag-fixed-bad"}"><div class="t">{head}</div>'
+                f'<div class="s">{esc(sub)}</div><div class="ag-sec"><div class="h">Guardrail applied</div>'
+                f'<div class="b">🛠 {esc(fixed["guardrail"])}</div></div>'
+                f'<div class="ag-sec"><div class="h">Replay run <code>{esc(fixed["run"])}</code> · claims</div>{facts}'
+                f'</div></div>', unsafe_allow_html=True)
+    st.markdown(svg_timeline(timeline(fixed["run"]), claims(fixed["run"]), None), unsafe_allow_html=True)
 
 
 def page_detail() -> None:
@@ -521,6 +587,13 @@ def page_detail() -> None:
                 st.rerun()
             if result:
                 verdict_card(result, tl)
+                pattern = result["verdict"]["pattern_code"]
+                fixed = st.session_state.get(f"replay_{run_id}")
+                if pattern in GUARDRAILS and not fixed:
+                    if st.button("🛠  Apply fix & re-run", width="stretch"):
+                        confirm_fix(run_id, pattern)
+                if fixed:
+                    replay_card(fixed)
         else:
             st.success("This run succeeded — every expected fact matches the ground truth.")
 
@@ -574,16 +647,17 @@ def page_fleet() -> None:
 
 # ---------- layout ----------
 
-PAGES = {"Runs": page_runs, "Run detail": page_detail, "Fleet": page_fleet}
-if "nav" in st.session_state:
-    st.session_state["page"] = st.session_state.pop("nav")
+RUNS_PAGE = st.Page(page_runs, title="Runs", icon="📋", url_path="runs", default=True)
+DETAIL_PAGE = st.Page(page_detail, title="Run detail", icon="🔍", url_path="run")
+FLEET_PAGE = st.Page(page_fleet, title="Fleet", icon="🌐", url_path="fleet")
 with st.sidebar:
     st.markdown('<div class="ag-brand">🩻 <span>AutopsyGraph</span></div>'
                 '<div class="ag-tag">Every failed agent run leaves evidence. We follow it.</div>',
                 unsafe_allow_html=True)
-    page = st.radio("Navigate", list(PAGES), key="page", label_visibility="collapsed")
+nav = st.navigation([RUNS_PAGE, DETAIL_PAGE, FLEET_PAGE], position="sidebar")
+with st.sidebar:
     st.markdown('<div class="ag-live"><i></i>Live on Neo4j Aura</div>' if aura_ok() else
                 '<span class="ag-pill ag-bad">● Aura unreachable</span>', unsafe_allow_html=True)
     st.caption("Graphs Gone Wild · NODES 2026")
-PAGES[page]()
+nav.run()
 st.markdown(f'<div class="ag-foot">{esc(FOOTER)}</div>', unsafe_allow_html=True)
