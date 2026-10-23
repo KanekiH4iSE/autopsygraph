@@ -39,7 +39,8 @@ INTENTS = {"order_status_ambiguous": "Order status (ambiguous name)", "refund_el
 
 CSS = """
 <style>
-#MainMenu, header [data-testid="stToolbar"], footer {visibility: hidden;}
+#MainMenu, footer, [data-testid="stMainMenu"], [data-testid="stAppDeployButton"], [data-testid="stStatusWidget"] {
+  display: none !important;}
 header[data-testid="stHeader"] {background: rgba(255,255,255,.94); border-bottom: 1px solid rgba(22,24,29,.08);
   box-shadow: 0 1px 8px rgba(16,24,40,.04);}
 .block-container {padding-top: 1.6rem; padding-bottom: 2rem; max-width: 1500px;}
@@ -715,7 +716,7 @@ def page_fleet() -> None:
 
 # ---------- layout ----------
 
-RUNS_PAGE = st.Page(page_runs, title="Runs", icon="📋", url_path="runs", default=True)
+RUNS_PAGE = st.Page(page_runs, title="Runs", icon="📋", default=True)
 DETAIL_PAGE = st.Page(page_detail, title="Run detail", icon="🔍", url_path="run")
 FLEET_PAGE = st.Page(page_fleet, title="Fleet", icon="🌐", url_path="fleet")
 nav = st.navigation([RUNS_PAGE, DETAIL_PAGE, FLEET_PAGE], position="top")
