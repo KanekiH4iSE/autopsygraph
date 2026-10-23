@@ -1,0 +1,124 @@
+{
+  "run_id": "run_010",
+  "session_id": "sess_010",
+  "task_id": "T08_refund_request__ORD-1001",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "Refund ORD-1001 (Granite Hiking Boot) now, please.",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Look up the order.",
+      "tool_call": {
+        "id": "run_010-c1",
+        "tool": "get_order",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1001",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1001"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_010-o1",
+        "status": "ok",
+        "summary": "ORD-1001 has SKU-BOOT-01 $149, delivered 2026-09-02",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_010-e1",
+          "text": "ORD-1001 has SKU-BOOT-01 $149, delivered 2026-09-02",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1001",
+            "product:SKU-BOOT-01"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "tool",
+      "stated_rationale": "Verify eligibility.",
+      "tool_call": {
+        "id": "run_010-c2",
+        "tool": "check_refund_eligibility",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1001",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1001"
+          },
+          {
+            "name": "sku",
+            "value": "SKU-BOOT-01",
+            "valid": true,
+            "violation": null,
+            "refers_to": "product:SKU-BOOT-01"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_010-o2",
+        "status": "ok",
+        "summary": "Not eligible: window_expired",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_010-e2",
+          "text": "Not eligible: window_expired",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1001",
+            "product:SKU-BOOT-01"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 3,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "Sorry, that item isn't refundable (window expired).",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "refund_eligible",
+        "value": "false",
+        "supported_by": [
+          "run_010-e2"
+        ]
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": null,
+    "root_cause_step": null,
+    "contributing": []
+  }
+}

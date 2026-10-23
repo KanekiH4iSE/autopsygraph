@@ -1,0 +1,77 @@
+{
+  "run_id": "run_014",
+  "session_id": "sess_014",
+  "task_id": "T15_policy_question__refund_window",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "How long do I have to return something?",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Check the policy.",
+      "tool_call": {
+        "id": "run_014-c1",
+        "tool": "search_policy",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "query",
+            "value": "refund window",
+            "valid": true,
+            "violation": null,
+            "refers_to": null
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_014-o1",
+        "status": "ok",
+        "summary": "POL-REFUND v2: Refunds within 30 days of delivery; final-sale items are excluded.",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_014-e1",
+          "text": "POL-REFUND v2: Refunds within 30 days of delivery; final-sale items are excluded.",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "policy:POL-REFUND@v2"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "You can request a refund within 30 days of delivery (final-sale items excluded).",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "window_days",
+        "value": "30",
+        "supported_by": [
+          "run_014-e1"
+        ]
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": null,
+    "root_cause_step": null,
+    "contributing": []
+  }
+}

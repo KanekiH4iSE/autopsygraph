@@ -1,0 +1,39 @@
+{
+  "run_id": "run_084",
+  "session_id": "sess_084",
+  "task_id": "T15_policy_question__refund_window",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "What's your refund window?",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "You have 90 days to return anything, no questions asked.",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "window_days",
+        "value": "90",
+        "supported_by": []
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": "FP05",
+    "root_cause_step": 1,
+    "contributing": [
+      "FP11@1"
+    ]
+  }
+}

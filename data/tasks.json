@@ -1,0 +1,543 @@
+[
+  {
+    "template": "T02",
+    "intent": "order_status_ambiguous",
+    "params": {
+      "city": "Austin"
+    },
+    "expected_tools": [
+      "find_customer",
+      "list_orders",
+      "get_shipment"
+    ],
+    "required_tools": [
+      "find_customer",
+      "list_orders"
+    ],
+    "forbidden_tools": [],
+    "expected_facts": {
+      "latest_order": "ORD-1150",
+      "shipment_status": "delivered"
+    },
+    "expected_entities": [
+      "customer:C-019",
+      "order:ORD-1150"
+    ],
+    "task_id": "T02_order_status_ambiguous__Austin"
+  },
+  {
+    "template": "T02",
+    "intent": "order_status_ambiguous",
+    "params": {
+      "city": "Denver"
+    },
+    "expected_tools": [
+      "find_customer",
+      "list_orders",
+      "get_shipment"
+    ],
+    "required_tools": [
+      "find_customer",
+      "list_orders"
+    ],
+    "forbidden_tools": [],
+    "expected_facts": {
+      "latest_order": "ORD-1188",
+      "shipment_status": "in_transit"
+    },
+    "expected_entities": [
+      "customer:C-031",
+      "order:ORD-1188"
+    ],
+    "task_id": "T02_order_status_ambiguous__Denver"
+  },
+  {
+    "template": "T07",
+    "intent": "refund_eligibility",
+    "params": {
+      "order": "ORD-1002"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "true"
+    },
+    "expected_entities": [
+      "order:ORD-1002",
+      "product:SKU-HAT-12"
+    ],
+    "task_id": "T07_refund_eligibility__ORD-1002"
+  },
+  {
+    "template": "T07",
+    "intent": "refund_eligibility",
+    "params": {
+      "order": "ORD-1003"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1003",
+      "product:SKU-LAMP-07"
+    ],
+    "task_id": "T07_refund_eligibility__ORD-1003"
+  },
+  {
+    "template": "T07",
+    "intent": "refund_eligibility",
+    "params": {
+      "order": "ORD-1004"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1004",
+      "product:SKU-BAG-06"
+    ],
+    "task_id": "T07_refund_eligibility__ORD-1004"
+  },
+  {
+    "template": "T07",
+    "intent": "refund_eligibility",
+    "params": {
+      "order": "ORD-1005"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1005",
+      "product:SKU-GPS-15"
+    ],
+    "task_id": "T07_refund_eligibility__ORD-1005"
+  },
+  {
+    "template": "T07",
+    "intent": "refund_eligibility",
+    "params": {
+      "order": "ORD-1006"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1006",
+      "product:SKU-POLE-08"
+    ],
+    "task_id": "T07_refund_eligibility__ORD-1006"
+  },
+  {
+    "template": "T07",
+    "intent": "refund_eligibility",
+    "params": {
+      "order": "ORD-1007"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1007",
+      "product:SKU-JKT-05"
+    ],
+    "task_id": "T07_refund_eligibility__ORD-1007"
+  },
+  {
+    "template": "T07",
+    "intent": "refund_eligibility",
+    "params": {
+      "order": "ORD-1042"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1042",
+      "product:SKU-TENT-02"
+    ],
+    "task_id": "T07_refund_eligibility__ORD-1042"
+  },
+  {
+    "template": "T08",
+    "intent": "refund_request",
+    "params": {
+      "order": "ORD-1001"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1001",
+      "product:SKU-BOOT-01"
+    ],
+    "task_id": "T08_refund_request__ORD-1001"
+  },
+  {
+    "template": "T08",
+    "intent": "refund_request",
+    "params": {
+      "order": "ORD-1004"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1004",
+      "product:SKU-BAG-06"
+    ],
+    "task_id": "T08_refund_request__ORD-1004"
+  },
+  {
+    "template": "T08",
+    "intent": "refund_request",
+    "params": {
+      "order": "ORD-1006"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1006",
+      "product:SKU-POLE-08"
+    ],
+    "task_id": "T08_refund_request__ORD-1006"
+  },
+  {
+    "template": "T08",
+    "intent": "refund_request",
+    "params": {
+      "order": "ORD-1008"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility",
+      "issue_refund"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [],
+    "expected_facts": {
+      "refund_eligible": "true"
+    },
+    "expected_entities": [
+      "order:ORD-1008",
+      "product:SKU-STOVE-03"
+    ],
+    "task_id": "T08_refund_request__ORD-1008"
+  },
+  {
+    "template": "T08",
+    "intent": "refund_request",
+    "params": {
+      "order": "ORD-1042"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "false"
+    },
+    "expected_entities": [
+      "order:ORD-1042",
+      "product:SKU-TENT-02"
+    ],
+    "task_id": "T08_refund_request__ORD-1042"
+  },
+  {
+    "template": "T12",
+    "intent": "delay_compensation",
+    "params": {
+      "order": "ORD-1001"
+    },
+    "expected_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "required_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "credit_usd": "0"
+    },
+    "expected_entities": [
+      "order:ORD-1001"
+    ],
+    "task_id": "T12_delay_compensation__ORD-1001"
+  },
+  {
+    "template": "T12",
+    "intent": "delay_compensation",
+    "params": {
+      "order": "ORD-1007"
+    },
+    "expected_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "required_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "credit_usd": "10"
+    },
+    "expected_entities": [
+      "order:ORD-1007"
+    ],
+    "task_id": "T12_delay_compensation__ORD-1007"
+  },
+  {
+    "template": "T12",
+    "intent": "delay_compensation",
+    "params": {
+      "order": "ORD-1040"
+    },
+    "expected_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "required_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "credit_usd": "10"
+    },
+    "expected_entities": [
+      "order:ORD-1040"
+    ],
+    "task_id": "T12_delay_compensation__ORD-1040"
+  },
+  {
+    "template": "T12",
+    "intent": "delay_compensation",
+    "params": {
+      "order": "ORD-1107"
+    },
+    "expected_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "required_tools": [
+      "get_shipment",
+      "search_policy"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "credit_usd": "10"
+    },
+    "expected_entities": [
+      "order:ORD-1107"
+    ],
+    "task_id": "T12_delay_compensation__ORD-1107"
+  },
+  {
+    "template": "T15",
+    "intent": "policy_question",
+    "params": {},
+    "expected_tools": [
+      "search_policy"
+    ],
+    "required_tools": [
+      "search_policy"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "window_days": "30"
+    },
+    "expected_entities": [],
+    "task_id": "T15_policy_question__refund_window"
+  },
+  {
+    "template": "T18",
+    "intent": "order_status",
+    "params": {
+      "order": "ORD-1188"
+    },
+    "expected_tools": [
+      "get_order"
+    ],
+    "required_tools": [
+      "get_order"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "order_status": "in_transit"
+    },
+    "expected_entities": [
+      "order:ORD-1188"
+    ],
+    "task_id": "T18_order_status__ORD-1188"
+  },
+  {
+    "template": "T21",
+    "intent": "product_info",
+    "params": {
+      "sku": "SKU-JKT-05"
+    },
+    "expected_tools": [
+      "get_product"
+    ],
+    "required_tools": [
+      "get_product"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "price": "129.00"
+    },
+    "expected_entities": [
+      "product:SKU-JKT-05"
+    ],
+    "task_id": "T21_product_info__SKU-JKT-05"
+  },
+  {
+    "template": "T24",
+    "intent": "return_jacket",
+    "params": {
+      "order": "ORD-1043"
+    },
+    "expected_tools": [
+      "get_order",
+      "check_refund_eligibility"
+    ],
+    "required_tools": [
+      "check_refund_eligibility"
+    ],
+    "forbidden_tools": [
+      "issue_refund"
+    ],
+    "expected_facts": {
+      "refund_eligible": "true"
+    },
+    "expected_entities": [
+      "order:ORD-1043",
+      "product:SKU-JKT-05"
+    ],
+    "task_id": "T24_return_jacket__ORD-1043"
+  }
+]

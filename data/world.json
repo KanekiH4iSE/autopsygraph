@@ -1,0 +1,797 @@
+{
+  "today": "2026-10-23",
+  "customers": [
+    {
+      "id": "C-001",
+      "name": "Vera Novak",
+      "city": "Austin",
+      "email": "vera.novak.1@example.com"
+    },
+    {
+      "id": "C-002",
+      "name": "Ines Kim",
+      "city": "Denver",
+      "email": "ines.kim.2@example.com"
+    },
+    {
+      "id": "C-003",
+      "name": "Elena Novak",
+      "city": "Chicago",
+      "email": "elena.novak.3@example.com"
+    },
+    {
+      "id": "C-004",
+      "name": "Jonas Weber",
+      "city": "Seattle",
+      "email": "jonas.weber.4@example.com"
+    },
+    {
+      "id": "C-005",
+      "name": "Sam Novak",
+      "city": "Portland",
+      "email": "sam.novak.5@example.com"
+    },
+    {
+      "id": "C-006",
+      "name": "Noah Schmidt",
+      "city": "Austin",
+      "email": "noah.schmidt.6@example.com"
+    },
+    {
+      "id": "C-007",
+      "name": "Chloe Kim",
+      "city": "Denver",
+      "email": "chloe.kim.7@example.com"
+    },
+    {
+      "id": "C-008",
+      "name": "Rosa Weber",
+      "city": "Austin",
+      "email": "rosa.weber.8@example.com"
+    },
+    {
+      "id": "C-009",
+      "name": "Sam Kim",
+      "city": "Chicago",
+      "email": "sam.kim.9@example.com"
+    },
+    {
+      "id": "C-010",
+      "name": "Vera Costa",
+      "city": "Boston",
+      "email": "vera.costa.10@example.com"
+    },
+    {
+      "id": "C-011",
+      "name": "Hugo Hansen",
+      "city": "Portland",
+      "email": "hugo.hansen.11@example.com"
+    },
+    {
+      "id": "C-012",
+      "name": "Ines Schmidt",
+      "city": "Denver",
+      "email": "ines.schmidt.12@example.com"
+    },
+    {
+      "id": "C-013",
+      "name": "Noah Berg",
+      "city": "Seattle",
+      "email": "noah.berg.13@example.com"
+    },
+    {
+      "id": "C-014",
+      "name": "Elena Kim",
+      "city": "Seattle",
+      "email": "elena.kim.14@example.com"
+    },
+    {
+      "id": "C-015",
+      "name": "David Novak",
+      "city": "Boston",
+      "email": "david.novak.15@example.com"
+    },
+    {
+      "id": "C-016",
+      "name": "David Berg",
+      "city": "Seattle",
+      "email": "david.berg.16@example.com"
+    },
+    {
+      "id": "C-017",
+      "name": "Umar Silva",
+      "city": "Austin",
+      "email": "umar.silva.17@example.com"
+    },
+    {
+      "id": "C-018",
+      "name": "Olga Costa",
+      "city": "Austin",
+      "email": "olga.costa.18@example.com"
+    },
+    {
+      "id": "C-019",
+      "name": "Maria Lopez",
+      "city": "Austin",
+      "email": "maria.lopez.19@example.com"
+    },
+    {
+      "id": "C-020",
+      "name": "Mila Novak",
+      "city": "Portland",
+      "email": "mila.novak.20@example.com"
+    },
+    {
+      "id": "C-021",
+      "name": "Jonas Weber",
+      "city": "Seattle",
+      "email": "jonas.weber.21@example.com"
+    },
+    {
+      "id": "C-022",
+      "name": "Tara Kim",
+      "city": "Chicago",
+      "email": "tara.kim.22@example.com"
+    },
+    {
+      "id": "C-023",
+      "name": "Chloe Schmidt",
+      "city": "Chicago",
+      "email": "chloe.schmidt.23@example.com"
+    },
+    {
+      "id": "C-024",
+      "name": "Hugo Silva",
+      "city": "Austin",
+      "email": "hugo.silva.24@example.com"
+    },
+    {
+      "id": "C-031",
+      "name": "Maria Lopez",
+      "city": "Denver",
+      "email": "maria.lopez.31@example.com"
+    }
+  ],
+  "products": [
+    {
+      "sku": "SKU-TENT-02",
+      "name": "Ridgeline 2P Tent",
+      "price": 189.0,
+      "final_sale": true
+    },
+    {
+      "sku": "SKU-JKT-05",
+      "name": "Summit Shell Jacket",
+      "price": 129.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-STOVE-03",
+      "name": "Trailblaze Stove",
+      "price": 79.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-BOOT-01",
+      "name": "Granite Hiking Boot",
+      "price": 149.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-PACK-04",
+      "name": "Alpine 45L Pack",
+      "price": 159.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-BAG-06",
+      "name": "Glacier Sleeping Bag",
+      "price": 139.0,
+      "final_sale": true
+    },
+    {
+      "sku": "SKU-LAMP-07",
+      "name": "Lumen Headlamp",
+      "price": 39.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-POLE-08",
+      "name": "Carbon Trek Poles",
+      "price": 89.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-MAT-09",
+      "name": "Cloudrest Sleeping Pad",
+      "price": 99.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-FILT-10",
+      "name": "PureFlow Water Filter",
+      "price": 49.0,
+      "final_sale": true
+    },
+    {
+      "sku": "SKU-GLOV-11",
+      "name": "Ridge Gloves",
+      "price": 35.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-HAT-12",
+      "name": "Sunpeak Hat",
+      "price": 29.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-COOK-13",
+      "name": "Basecamp Cook Set",
+      "price": 69.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-CHAIR-14",
+      "name": "Fold Camp Chair",
+      "price": 59.0,
+      "final_sale": false
+    },
+    {
+      "sku": "SKU-GPS-15",
+      "name": "TrailMark GPS",
+      "price": 249.0,
+      "final_sale": true
+    },
+    {
+      "sku": "SKU-SOCK-16",
+      "name": "Merino Socks 3-Pack",
+      "price": 25.0,
+      "final_sale": false
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-1001",
+      "customer_id": "C-008",
+      "sku": "SKU-BOOT-01",
+      "delivered_at": "2026-09-02",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1002",
+      "customer_id": "C-015",
+      "sku": "SKU-HAT-12",
+      "delivered_at": "2026-09-30",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1003",
+      "customer_id": "C-012",
+      "sku": "SKU-LAMP-07",
+      "delivered_at": "2026-09-16",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1004",
+      "customer_id": "C-020",
+      "sku": "SKU-BAG-06",
+      "delivered_at": "2026-08-13",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1005",
+      "customer_id": "C-006",
+      "sku": "SKU-GPS-15",
+      "delivered_at": "2026-09-02",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1006",
+      "customer_id": "C-021",
+      "sku": "SKU-POLE-08",
+      "delivered_at": "2026-09-09",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1007",
+      "customer_id": "C-008",
+      "sku": "SKU-JKT-05",
+      "delivered_at": "2026-09-10",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1008",
+      "customer_id": "C-009",
+      "sku": "SKU-STOVE-03",
+      "delivered_at": "2026-09-23",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1009",
+      "customer_id": "C-023",
+      "sku": "SKU-GLOV-11",
+      "delivered_at": "2026-09-23",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1010",
+      "customer_id": "C-013",
+      "sku": "SKU-GPS-15",
+      "delivered_at": "2026-10-02",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1011",
+      "customer_id": "C-005",
+      "sku": "SKU-POLE-08",
+      "delivered_at": "2026-08-10",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1012",
+      "customer_id": "C-009",
+      "sku": "SKU-CHAIR-14",
+      "delivered_at": "2026-08-07",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1013",
+      "customer_id": "C-012",
+      "sku": "SKU-POLE-08",
+      "delivered_at": "2026-10-03",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1014",
+      "customer_id": "C-016",
+      "sku": "SKU-STOVE-03",
+      "delivered_at": "2026-10-14",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1015",
+      "customer_id": "C-005",
+      "sku": "SKU-BAG-06",
+      "delivered_at": "2026-08-27",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1016",
+      "customer_id": "C-003",
+      "sku": "SKU-COOK-13",
+      "delivered_at": "2026-09-02",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1017",
+      "customer_id": "C-015",
+      "sku": "SKU-MAT-09",
+      "delivered_at": "2026-08-11",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1018",
+      "customer_id": "C-022",
+      "sku": "SKU-BOOT-01",
+      "delivered_at": "2026-08-13",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1019",
+      "customer_id": "C-021",
+      "sku": "SKU-GLOV-11",
+      "delivered_at": "2026-10-06",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1020",
+      "customer_id": "C-014",
+      "sku": "SKU-BAG-06",
+      "delivered_at": "2026-08-23",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1021",
+      "customer_id": "C-024",
+      "sku": "SKU-MAT-09",
+      "delivered_at": "2026-08-17",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1022",
+      "customer_id": "C-017",
+      "sku": "SKU-BOOT-01",
+      "delivered_at": "2026-09-12",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1023",
+      "customer_id": "C-020",
+      "sku": "SKU-LAMP-07",
+      "delivered_at": "2026-10-01",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1024",
+      "customer_id": "C-006",
+      "sku": "SKU-TENT-02",
+      "delivered_at": "2026-08-05",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1025",
+      "customer_id": "C-016",
+      "sku": "SKU-TENT-02",
+      "delivered_at": "2026-10-06",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1026",
+      "customer_id": "C-010",
+      "sku": "SKU-POLE-08",
+      "delivered_at": "2026-10-13",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1027",
+      "customer_id": "C-019",
+      "sku": "SKU-STOVE-03",
+      "delivered_at": "2026-10-10",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1028",
+      "customer_id": "C-003",
+      "sku": "SKU-PACK-04",
+      "delivered_at": "2026-10-04",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1029",
+      "customer_id": "C-018",
+      "sku": "SKU-BAG-06",
+      "delivered_at": "2026-09-17",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1030",
+      "customer_id": "C-020",
+      "sku": "SKU-CHAIR-14",
+      "delivered_at": "2026-09-23",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1031",
+      "customer_id": "C-024",
+      "sku": "SKU-LAMP-07",
+      "delivered_at": "2026-09-11",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1032",
+      "customer_id": "C-022",
+      "sku": "SKU-HAT-12",
+      "delivered_at": "2026-08-25",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1033",
+      "customer_id": "C-015",
+      "sku": "SKU-BOOT-01",
+      "delivered_at": "2026-09-19",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1034",
+      "customer_id": "C-003",
+      "sku": "SKU-GLOV-11",
+      "delivered_at": "2026-10-18",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1035",
+      "customer_id": "C-018",
+      "sku": "SKU-POLE-08",
+      "delivered_at": "2026-08-06",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1036",
+      "customer_id": "C-001",
+      "sku": "SKU-STOVE-03",
+      "delivered_at": "2026-10-13",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1037",
+      "customer_id": "C-003",
+      "sku": "SKU-JKT-05",
+      "delivered_at": "2026-09-08",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1038",
+      "customer_id": "C-017",
+      "sku": "SKU-POLE-08",
+      "delivered_at": "2026-09-15",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1039",
+      "customer_id": "C-007",
+      "sku": "SKU-PACK-04",
+      "delivered_at": "2026-08-08",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1040",
+      "customer_id": "C-016",
+      "sku": "SKU-POLE-08",
+      "delivered_at": "2026-08-21",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1042",
+      "customer_id": "C-004",
+      "sku": "SKU-TENT-02",
+      "delivered_at": "2026-09-02",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1043",
+      "customer_id": "C-007",
+      "sku": "SKU-JKT-05",
+      "delivered_at": "2026-10-12",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1107",
+      "customer_id": "C-012",
+      "sku": "SKU-STOVE-03",
+      "delivered_at": null,
+      "status": "in_transit"
+    },
+    {
+      "id": "ORD-1150",
+      "customer_id": "C-019",
+      "sku": "SKU-BOOT-01",
+      "delivered_at": "2026-10-10",
+      "status": "delivered"
+    },
+    {
+      "id": "ORD-1188",
+      "customer_id": "C-031",
+      "sku": "SKU-PACK-04",
+      "delivered_at": null,
+      "status": "in_transit"
+    }
+  ],
+  "shipments": [
+    {
+      "order_id": "ORD-1001",
+      "delay_days": 4,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1002",
+      "delay_days": 5,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1003",
+      "delay_days": 1,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1004",
+      "delay_days": 3,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1005",
+      "delay_days": 4,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1006",
+      "delay_days": 0,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1007",
+      "delay_days": 6,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1008",
+      "delay_days": 9,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1009",
+      "delay_days": 7,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1010",
+      "delay_days": 4,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1011",
+      "delay_days": 8,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1012",
+      "delay_days": 6,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1013",
+      "delay_days": 8,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1014",
+      "delay_days": 1,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1015",
+      "delay_days": 9,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1016",
+      "delay_days": 9,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1017",
+      "delay_days": 0,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1018",
+      "delay_days": 4,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1019",
+      "delay_days": 4,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1020",
+      "delay_days": 0,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1021",
+      "delay_days": 2,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1022",
+      "delay_days": 8,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1023",
+      "delay_days": 5,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1024",
+      "delay_days": 5,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1025",
+      "delay_days": 5,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1026",
+      "delay_days": 3,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1027",
+      "delay_days": 7,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1028",
+      "delay_days": 7,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1029",
+      "delay_days": 8,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1030",
+      "delay_days": 8,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1031",
+      "delay_days": 6,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1032",
+      "delay_days": 8,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1033",
+      "delay_days": 3,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1034",
+      "delay_days": 9,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1035",
+      "delay_days": 3,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1036",
+      "delay_days": 3,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1037",
+      "delay_days": 1,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1038",
+      "delay_days": 7,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1039",
+      "delay_days": 9,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1040",
+      "delay_days": 6,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1042",
+      "delay_days": 0,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1043",
+      "delay_days": 1,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1107",
+      "delay_days": 7,
+      "status": "in_transit"
+    },
+    {
+      "order_id": "ORD-1150",
+      "delay_days": 0,
+      "status": "delivered"
+    },
+    {
+      "order_id": "ORD-1188",
+      "delay_days": 2,
+      "status": "in_transit"
+    }
+  ]
+}

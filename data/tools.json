@@ -1,0 +1,103 @@
+[
+  {
+    "name": "find_customer",
+    "read_only": true,
+    "args": {
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      }
+    }
+  },
+  {
+    "name": "get_order",
+    "read_only": true,
+    "args": {
+      "order_id": {
+        "type": "string",
+        "pattern": "^ORD-\\d{4}$"
+      }
+    }
+  },
+  {
+    "name": "list_orders",
+    "read_only": true,
+    "args": {
+      "customer_id": {
+        "type": "string",
+        "pattern": "^C-\\d{3}$"
+      }
+    }
+  },
+  {
+    "name": "get_shipment",
+    "read_only": true,
+    "args": {
+      "order_id": {
+        "type": "string",
+        "pattern": "^ORD-\\d{4}$"
+      }
+    }
+  },
+  {
+    "name": "get_product",
+    "read_only": true,
+    "args": {
+      "sku": {
+        "type": "string",
+        "pattern": "^SKU-[A-Z]+-\\d{2}$"
+      }
+    }
+  },
+  {
+    "name": "search_policy",
+    "read_only": true,
+    "args": {
+      "query": {
+        "type": "string"
+      }
+    }
+  },
+  {
+    "name": "check_refund_eligibility",
+    "read_only": true,
+    "args": {
+      "order_id": {
+        "type": "string",
+        "pattern": "^ORD-\\d{4}$"
+      },
+      "sku": {
+        "type": "string",
+        "pattern": "^SKU-[A-Z]+-\\d{2}$"
+      }
+    }
+  },
+  {
+    "name": "issue_refund",
+    "read_only": false,
+    "args": {
+      "order_id": {
+        "type": "string",
+        "pattern": "^ORD-\\d{4}$"
+      },
+      "sku": {
+        "type": "string",
+        "pattern": "^SKU-[A-Z]+-\\d{2}$"
+      },
+      "amount": {
+        "type": "number"
+      }
+    }
+  },
+  {
+    "name": "escalate_to_human",
+    "read_only": false,
+    "args": {
+      "reason": {
+        "type": "string"
+      }
+    }
+  }
+]

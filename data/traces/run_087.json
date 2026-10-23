@@ -1,0 +1,162 @@
+{
+  "run_id": "run_087",
+  "session_id": "sess_087",
+  "task_id": "T02_order_status_ambiguous__Denver",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "This is Maria Lopez from Denver. Where is my latest order?",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Find the customer.",
+      "tool_call": {
+        "id": "run_087-c1",
+        "tool": "find_customer",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "name",
+            "value": "Maria Lopez",
+            "valid": true,
+            "violation": null,
+            "refers_to": null
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_087-o1",
+        "status": "ok",
+        "summary": "Two Maria Lopez: C-019 Austin, C-031 Denver",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_087-e1",
+          "text": "Two Maria Lopez: C-019 Austin, C-031 Denver",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "customer:C-019",
+            "customer:C-031"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "tool",
+      "stated_rationale": "List the customer's orders.",
+      "tool_call": {
+        "id": "run_087-c2",
+        "tool": "list_orders",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "customer_id",
+            "value": "C-019",
+            "valid": true,
+            "violation": null,
+            "refers_to": "customer:C-019"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_087-o2",
+        "status": "ok",
+        "summary": "C-019 latest order ORD-1150",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_087-e2",
+          "text": "C-019 latest order ORD-1150",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "customer:C-019",
+            "order:ORD-1150"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 3,
+      "kind": "tool",
+      "stated_rationale": "Check the shipment.",
+      "tool_call": {
+        "id": "run_087-c3",
+        "tool": "get_shipment",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1150",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1150"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_087-o3",
+        "status": "ok",
+        "summary": "ORD-1150 delivered 2026-10-10",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_087-e3",
+          "text": "ORD-1150 delivered 2026-10-10",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1150"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 4,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "Your latest order ORD-1150 was delivered on 2026-10-10.",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "latest_order",
+        "value": "ORD-1150",
+        "supported_by": [
+          "run_087-e2"
+        ]
+      },
+      {
+        "key": "shipment_status",
+        "value": "delivered",
+        "supported_by": [
+          "run_087-e3"
+        ]
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": "FP03",
+    "root_cause_step": 2,
+    "contributing": []
+  }
+}

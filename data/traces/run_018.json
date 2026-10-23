@@ -1,0 +1,78 @@
+{
+  "run_id": "run_018",
+  "session_id": "sess_018",
+  "task_id": "T18_order_status__ORD-1188",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "What's the status of order ORD-1188?",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Look up the order.",
+      "tool_call": {
+        "id": "run_018-c1",
+        "tool": "get_order",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1188",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1188"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_018-o1",
+        "status": "ok",
+        "summary": "ORD-1188 has SKU-PACK-04 $159, in transit",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_018-e1",
+          "text": "ORD-1188 has SKU-PACK-04 $159, in transit",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1188",
+            "product:SKU-PACK-04"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "Order ORD-1188 is in transit.",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "order_status",
+        "value": "in_transit",
+        "supported_by": [
+          "run_018-e1"
+        ]
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": null,
+    "root_cause_step": null,
+    "contributing": []
+  }
+}

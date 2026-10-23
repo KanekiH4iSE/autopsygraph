@@ -1,0 +1,77 @@
+{
+  "run_id": "run_022",
+  "session_id": "sess_022",
+  "task_id": "T21_product_info__SKU-JKT-05",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "How much is the Summit Shell Jacket?",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Check the product.",
+      "tool_call": {
+        "id": "run_022-c1",
+        "tool": "get_product",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "sku",
+            "value": "SKU-JKT-05",
+            "valid": true,
+            "violation": null,
+            "refers_to": "product:SKU-JKT-05"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_022-o1",
+        "status": "ok",
+        "summary": "SKU-JKT-05 Summit Shell Jacket $129.00",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_022-e1",
+          "text": "SKU-JKT-05 Summit Shell Jacket $129.00",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "product:SKU-JKT-05"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "It costs $129.00.",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "price",
+        "value": "129.00",
+        "supported_by": [
+          "run_022-e1"
+        ]
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": null,
+    "root_cause_step": null,
+    "contributing": []
+  }
+}

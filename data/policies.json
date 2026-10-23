@@ -1,0 +1,36 @@
+[
+  {
+    "doc_id": "POL-REFUND",
+    "version": "v1",
+    "effective_from": "2024-01-01",
+    "superseded_by": "v2",
+    "text": "Refunds within 60 days of delivery.",
+    "window_days": 60,
+    "final_sale_excluded": false
+  },
+  {
+    "doc_id": "POL-REFUND",
+    "version": "v2",
+    "effective_from": "2026-06-01",
+    "superseded_by": null,
+    "text": "Refunds within 30 days of delivery; final-sale items are excluded.",
+    "window_days": 30,
+    "final_sale_excluded": true
+  },
+  {
+    "doc_id": "POL-DELAY",
+    "version": "v1",
+    "effective_from": "2025-01-01",
+    "superseded_by": null,
+    "text": "If a shipment is delayed more than 5 days, the customer gets a $10 credit.",
+    "credit_usd": 10,
+    "threshold_days": 5
+  },
+  {
+    "doc_id": "POL-ESCALATION",
+    "version": "v1",
+    "effective_from": "2025-01-01",
+    "superseded_by": null,
+    "text": "Escalate to a human when a required system is unavailable."
+  }
+]

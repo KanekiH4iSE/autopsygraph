@@ -1,0 +1,163 @@
+{
+  "run_id": "run_031",
+  "session_id": "sess_031",
+  "task_id": "T07_refund_eligibility__ORD-1003",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "Am I eligible for a refund for ORD-1003 (Lumen Headlamp)?",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Look up the order.",
+      "tool_call": {
+        "id": "run_031-c1",
+        "tool": "get_order",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1003",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1003"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_031-o1",
+        "status": "ok",
+        "summary": "ORD-1003 has SKU-LAMP-07 $39, delivered 2026-09-16",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_031-e1",
+          "text": "ORD-1003 has SKU-LAMP-07 $39, delivered 2026-09-16",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1003",
+            "product:SKU-LAMP-07"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "tool",
+      "stated_rationale": "Verify eligibility.",
+      "tool_call": {
+        "id": "run_031-c2",
+        "tool": "check_refund_eligibility",
+        "attempt": 1,
+        "status": "timeout",
+        "latency_ms": 30000,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1003",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1003"
+          },
+          {
+            "name": "sku",
+            "value": "SKU-LAMP-07",
+            "valid": true,
+            "violation": null,
+            "refers_to": "product:SKU-LAMP-07"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_031-o2",
+        "status": "error",
+        "summary": "UPSTREAM_TIMEOUT",
+        "error": {
+          "code": "UPSTREAM_TIMEOUT",
+          "message": "Eligibility service did not respond in 30s",
+          "retryable": true
+        }
+      },
+      "evidence": []
+    },
+    {
+      "idx": 3,
+      "kind": "tool",
+      "stated_rationale": "Verify eligibility.",
+      "tool_call": {
+        "id": "run_031-c3",
+        "tool": "check_refund_eligibility",
+        "attempt": 2,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1003",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1003"
+          },
+          {
+            "name": "sku",
+            "value": "SKU-LAMP-07",
+            "valid": true,
+            "violation": null,
+            "refers_to": "product:SKU-LAMP-07"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_031-o3",
+        "status": "ok",
+        "summary": "Not eligible: window_expired",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_031-e3",
+          "text": "Not eligible: window_expired",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1003",
+            "product:SKU-LAMP-07"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 4,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "Sorry, that item isn't refundable (window expired).",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "refund_eligible",
+        "value": "false",
+        "supported_by": [
+          "run_031-e3"
+        ]
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": null,
+    "root_cause_step": null,
+    "contributing": []
+  }
+}

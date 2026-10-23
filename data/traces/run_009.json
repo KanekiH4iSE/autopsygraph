@@ -1,0 +1,176 @@
+{
+  "run_id": "run_009",
+  "session_id": "sess_009",
+  "task_id": "T08_refund_request__ORD-1008",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "Please refund the Trailblaze Stove from order ORD-1008.",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Look up the order.",
+      "tool_call": {
+        "id": "run_009-c1",
+        "tool": "get_order",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1008",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1008"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_009-o1",
+        "status": "ok",
+        "summary": "ORD-1008 has SKU-STOVE-03 $79, delivered 2026-09-23",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_009-e1",
+          "text": "ORD-1008 has SKU-STOVE-03 $79, delivered 2026-09-23",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1008",
+            "product:SKU-STOVE-03"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "tool",
+      "stated_rationale": "Verify eligibility.",
+      "tool_call": {
+        "id": "run_009-c2",
+        "tool": "check_refund_eligibility",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1008",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1008"
+          },
+          {
+            "name": "sku",
+            "value": "SKU-STOVE-03",
+            "valid": true,
+            "violation": null,
+            "refers_to": "product:SKU-STOVE-03"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_009-o2",
+        "status": "ok",
+        "summary": "Eligible: within_window",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_009-e2",
+          "text": "Eligible: within_window",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1008",
+            "product:SKU-STOVE-03"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 3,
+      "kind": "tool",
+      "stated_rationale": "Eligible, so process the refund.",
+      "tool_call": {
+        "id": "run_009-c3",
+        "tool": "issue_refund",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1008",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1008"
+          },
+          {
+            "name": "sku",
+            "value": "SKU-STOVE-03",
+            "valid": true,
+            "violation": null,
+            "refers_to": "product:SKU-STOVE-03"
+          },
+          {
+            "name": "amount",
+            "value": 79.0,
+            "valid": true,
+            "violation": null,
+            "refers_to": null
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_009-o3",
+        "status": "ok",
+        "summary": "Refund issued for $79",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_009-e3",
+          "text": "Refund issued for $79",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1008"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 4,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "Done - your refund of $79 is on its way.",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "refund_eligible",
+        "value": "true",
+        "supported_by": [
+          "run_009-e2"
+        ]
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": null,
+    "root_cause_step": null,
+    "contributing": []
+  }
+}

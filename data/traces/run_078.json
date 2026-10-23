@@ -1,0 +1,82 @@
+{
+  "run_id": "run_078",
+  "session_id": "sess_078",
+  "task_id": "T12_delay_compensation__ORD-1040",
+  "agent": {
+    "version": "1.3.0",
+    "prompt_version": "p4",
+    "model": "scripted"
+  },
+  "user_request": "What do I get for the delay on ORD-1040?",
+  "steps": [
+    {
+      "idx": 1,
+      "kind": "tool",
+      "stated_rationale": "Check the shipment.",
+      "tool_call": {
+        "id": "run_078-c1",
+        "tool": "get_shipment",
+        "attempt": 1,
+        "status": "ok",
+        "latency_ms": 120,
+        "args": [
+          {
+            "name": "order_id",
+            "value": "ORD-1040",
+            "valid": true,
+            "violation": null,
+            "refers_to": "order:ORD-1040"
+          }
+        ]
+      },
+      "observation": {
+        "id": "run_078-o1",
+        "status": "ok",
+        "summary": "ORD-1040 delivered 2026-08-21, 6 days late",
+        "error": null
+      },
+      "evidence": [
+        {
+          "id": "run_078-e1",
+          "text": "ORD-1040 delivered 2026-08-21, 6 days late",
+          "source_type": "tool",
+          "stale": false,
+          "about": [
+            "order:ORD-1040"
+          ]
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "kind": "answer",
+      "stated_rationale": null,
+      "tool_call": null,
+      "observation": null,
+      "evidence": []
+    }
+  ],
+  "final_answer": {
+    "text": "You're entitled to a 25% refund and free express shipping next time.",
+    "acknowledges_limitation": false,
+    "claims": [
+      {
+        "key": "compensation_due",
+        "value": "true",
+        "supported_by": []
+      },
+      {
+        "key": "credit_usd",
+        "value": "25%_refund",
+        "supported_by": []
+      }
+    ]
+  },
+  "label": {
+    "injected_pattern": "FP05",
+    "root_cause_step": 2,
+    "contributing": [
+      "FP11@2"
+    ]
+  }
+}
